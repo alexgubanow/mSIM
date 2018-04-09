@@ -14,6 +14,10 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 <!--Fluent theme-->
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+                <!-- accent resource -->
+                <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Accents/Steel.xaml" />
+                <!-- theme resource -->
+                <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Colors/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

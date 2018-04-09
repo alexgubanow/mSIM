@@ -5,7 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:simulation"
-        mc:Ignorable="d"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    mc:Ignorable="d"
         Title="mSIM" Height="600" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
@@ -31,7 +32,21 @@
             <!--Tabs-->
             <!--Contextual Tabs-->
             <Fluent:RibbonTabItem Header="Simulation">
-                <Fluent:RibbonGroupBox Header="Group">
+                <Fluent:RibbonGroupBox Header="Load">
+                    <Fluent:Button Header="From file" Icon="{iconPacks:Material Kind=FolderOpen}" 
+                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
+                    <Fluent:Button Header="Grey" Click="Button_Click"  
+                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Itegration">
+                    <Fluent:Button Header="Green" />
+                    <Fluent:Button Header="Grey" Click="Button_Click"  />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Model">
+                    <Fluent:Button Header="Green" />
+                    <Fluent:Button Header="Grey" Click="Button_Click"  />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Object">
                     <Fluent:Button Header="Green" />
                     <Fluent:Button Header="Grey" Click="Button_Click"  />
                 </Fluent:RibbonGroupBox>
