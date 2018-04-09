@@ -1,4 +1,5 @@
-﻿using System;
+﻿using simulation.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,31 @@ namespace simulation
     /// </summary>
     public partial class MainWindow
     {
+        /// <summary>
+        /// Gets the view's ViewModel.
+        /// </summary>
+        public MainViewModel Vm
+        {
+            get
+            {
+                return (MainViewModel)DataContext;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Vm.MainWin.MaterialsVis = Visibility.Visible;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Vm.MainWin.MaterialsVis = Visibility.Collapsed;
         }
     }
 }

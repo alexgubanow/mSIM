@@ -6,8 +6,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:simulation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="mSIM" Height="600" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
         <Fluent:Ribbon Grid.Row="0">
             <!--Backstage-->
             <Fluent:Ribbon.Menu>
@@ -15,13 +20,40 @@
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
 
+            <!--Contextual Tab Groups-->
+            <Fluent:Ribbon.ContextualGroups>
+                <Fluent:RibbonContextualTabGroup x:Name="MaterialsGroup"
+                                     Header="Materials" 
+                                     Visibility="{Binding MainWin.MaterialsVis}"
+                                     Background="Green" 
+                                     BorderBrush="Green" />
+            </Fluent:Ribbon.ContextualGroups>
             <!--Tabs-->
-            <Fluent:RibbonTabItem Header="Home">
+            <!--Contextual Tabs-->
+            <Fluent:RibbonTabItem Header="Simulation">
+                <Fluent:RibbonGroupBox Header="Group">
+                    <Fluent:Button Header="Green" />
+                    <Fluent:Button Header="Grey" Click="Button_Click"  />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Load">
                 <Fluent:RibbonGroupBox Header="Group">
                     <Fluent:Button Header="Green" />
                     <Fluent:Button Header="Grey"  />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Parameters" Group="{Binding Source={x:Reference MaterialsGroup}}">
+                <Fluent:RibbonGroupBox Header="Group">
+                    <Fluent:Button Header="6345" />
+                    <Fluent:Button Header="Grey"  />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            
+            
         </Fluent:Ribbon>
+
+        <Grid Grid.Row="1">
+            <Button Content="dfd" Width="50" Height="50" Click="Button_Click_1"/>
+        </Grid>
     </Grid>
 </Fluent:RibbonWindow>

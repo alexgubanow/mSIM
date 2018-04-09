@@ -1,4 +1,6 @@
 using GalaSoft.MvvmLight;
+using System.ComponentModel;
+using System.Windows;
 
 namespace simulation.ViewModel
 {
@@ -29,6 +31,42 @@ namespace simulation.ViewModel
             ////{
             ////    // Code runs "for real"
             ////}
+            MainWin = new MainWin();
+        }
+
+        public MainWin MainWin { get; set; }
+    }
+
+    public class MainWin : INotifyPropertyChanged
+    {
+        public MainWin()
+        {
+            MaterialsVis = Visibility.Collapsed;
+        }
+
+
+        private Visibility _MaterialsVis;
+
+        public Visibility MaterialsVis
+        {
+            get
+            {
+                return _MaterialsVis;
+            }
+
+            set
+            {
+                _MaterialsVis = value;
+                RaisePropertyChanged("MaterialsVis");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
