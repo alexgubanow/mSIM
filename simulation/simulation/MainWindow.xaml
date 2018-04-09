@@ -5,16 +5,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:simulation"
+    xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     mc:Ignorable="d"
         Title="mSIM" Height="600" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Fluent:Ribbon Grid.Row="0">
+    <DockPanel>
+        <Fluent:Ribbon DockPanel.Dock="Top" SelectedTabChanged="Ribbon_SelectedTabChanged" 
+                       SelectedTabIndex="{Binding MainWin.SelectedRibbonTab, Mode=TwoWay}">
             <!--Backstage-->
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage>
@@ -24,7 +21,7 @@
             <!--Contextual Tab Groups-->
             <Fluent:Ribbon.ContextualGroups>
                 <Fluent:RibbonContextualTabGroup x:Name="MaterialsGroup"
-                                     Header="Materials" 
+                                     Header="Object" 
                                      Visibility="{Binding MainWin.MaterialsVis}"
                                      Background="Green" 
                                      BorderBrush="Green" />
@@ -33,22 +30,21 @@
             <!--Contextual Tabs-->
             <Fluent:RibbonTabItem Header="Simulation">
                 <Fluent:RibbonGroupBox Header="Load">
-                    <Fluent:Button Header="From file" Icon="{iconPacks:Material Kind=FolderOpen}" 
-                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
-                    <Fluent:Button Header="Grey" Click="Button_Click"  
+                    <Fluent:Button Margin="0,5,0,0" Header="From file" Icon="{iconPacks:Material Kind=FolderOpen}" 
                                    LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Itegration">
-                    <Fluent:Button Header="Green" />
-                    <Fluent:Button Header="Grey" Click="Button_Click"  />
+                    <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}" 
+                                     MinWidth="125" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Model">
-                    <Fluent:Button Header="Green" />
-                    <Fluent:Button Header="Grey" Click="Button_Click"  />
+                    <Fluent:ComboBox Margin="0,5,0,0" Header="Model" ItemsSource="{Binding MainWin.mModels}" 
+                                     MinWidth="125" />
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Object">
-                    <Fluent:Button Header="Green" />
-                    <Fluent:Button Header="Grey" Click="Button_Click"  />
+                <Fluent:RibbonGroupBox x:Name="objGroupBox" Header="Object" GotFocus="objGroupBox_GotFocus">
+                    <Fluent:ComboBox Margin="0,5,0,0" x:Name="objComboBox" Header="Template" 
+                                     ItemsSource="{Binding MainWin.Objs}" 
+                                     MinWidth="125" GotFocus="objComboBox_GotFocus"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             <Fluent:RibbonTabItem Header="Load">
@@ -57,18 +53,71 @@
                     <Fluent:Button Header="Grey"  />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
-            <Fluent:RibbonTabItem Header="Parameters" Group="{Binding Source={x:Reference MaterialsGroup}}">
-                <Fluent:RibbonGroupBox Header="Group">
-                    <Fluent:Button Header="6345" />
-                    <Fluent:Button Header="Grey"  />
+            <Fluent:RibbonTabItem Header="Material Parameters" 
+                                  Group="{Binding Source={x:Reference MaterialsGroup}}">
+                <Fluent:RibbonGroupBox Header="Demensions">
+                    <local:numPowTen Margin="0,5,0,0" Clabel="L" />
+                    <local:numPowTen Margin="0,5,0,0" Clabel="b" />
+                <Border Width="1" Margin="3" Height="175" Visibility="Visible" Background="#FFB9C9DA" />
+                    <local:numPowTen Margin="0,5,0,0" Clabel="h " />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Physics">
+                    <local:numPowTen Margin="0,5,0,0" Clabel="ro" />
+                    <local:numPowTen Margin="0,5,0,0" Clabel="E " />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Initial state">
+                    <local:numPowTen Margin="0,5,0,0" Clabel="V0" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             
             
         </Fluent:Ribbon>
+        <Fluent:StatusBar DockPanel.Dock="Bottom">
+            <Fluent:StatusBarItem Title="Left placed item"
+                          Value="150"
+                          HorizontalAlignment="Left">
+                <TextBlock Text="150 px" />
+            </Fluent:StatusBarItem>
 
-        <Grid Grid.Row="1">
-            <Button Content="dfd" Width="50" Height="50" Click="Button_Click_1"/>
-        </Grid>
-    </Grid>
+            <Separator HorizontalAlignment="Left" />
+
+            <Fluent:StatusBarItem Title="Second left placed item"
+                          Value="Value shown in ContextMenu"
+                          ToolTip="Your ToolTip"
+                          Content="Content shown in StatusBar"
+                          HorizontalAlignment="Left" />
+
+            <Fluent:StatusBarItem Title="Item placed on the right side"
+                          HorizontalAlignment="Right"
+                          Value="Your value which is also used as content if no content is set." />
+        </Fluent:StatusBar>
+        <DockPanel LastChildFill="true">
+            <Expander ExpandDirection="Left" DockPanel.Dock="Right" Header="Charts">
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type RadioButton}">
+                            <Setter Property="RadioButton.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <ToggleButton IsChecked="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                          Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <RadioButton  Content="Object" IsChecked="True"/>
+                    <RadioButton  Content="Force" />
+                    <RadioButton  Content="Accl" />
+                    <RadioButton  Content="Velos" />
+                    <RadioButton  Content="Displ" />
+                    <RadioButton  Content="Coord" />
+                </StackPanel>
+            </Expander>
+            <WindowsFormsHost x:Name="CurveBox">
+                <zed:ZedGraphControl x:Name="mainPlot"/>
+            </WindowsFormsHost>
+        </DockPanel>
+    </DockPanel>
+    
 </Fluent:RibbonWindow>

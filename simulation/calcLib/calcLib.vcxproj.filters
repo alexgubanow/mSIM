@@ -24,7 +24,10 @@
     <ClInclude Include="LinearModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="integrSchems.h">
+    <ClInclude Include="calcLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="integr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,7 +41,10 @@
     <ClCompile Include="LinearModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="integrSchems.cpp">
+    <ClCompile Include="calcLib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="integr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

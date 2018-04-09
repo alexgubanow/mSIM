@@ -133,14 +133,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="integrSchems.h" />
+    <ClInclude Include="calcLib.h" />
+    <ClInclude Include="integr.h" />
     <ClInclude Include="LinearModel.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="integrSchems.cpp" />
+    <ClCompile Include="calcLib.cpp" />
+    <ClCompile Include="integr.cpp" />
     <ClCompile Include="LinearModel.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

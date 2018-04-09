@@ -1,18 +1,6 @@
 ﻿using simulation.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace simulation
 {
@@ -21,16 +9,7 @@ namespace simulation
     /// </summary>
     public partial class MainWindow
     {
-        /// <summary>
-        /// Gets the view's ViewModel.
-        /// </summary>
-        public MainViewModel Vm
-        {
-            get
-            {
-                return (MainViewModel)DataContext;
-            }
-        }
+        public MainViewModel Vm { get { return (MainViewModel)DataContext; } }
 
         public MainWindow()
         {
@@ -40,12 +19,27 @@ namespace simulation
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Vm.MainWin.MaterialsVis = Visibility.Visible;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Vm.MainWin.MaterialsVis = Visibility.Collapsed;
+        }
+
+        private void objComboBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Ribbon_SelectedTabChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Vm.MainWin.SelectedRibbonTab != 2)
+            {
+                Vm.MainWin.MaterialsVis = Visibility.Collapsed;
+            }
+        }
+
+        private void objGroupBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Vm.MainWin.MaterialsVis = Visibility.Visible;
         }
     }
 }
