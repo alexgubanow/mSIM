@@ -1,4 +1,5 @@
 #pragma once
+#include "calcLib.h"
 namespace calcLib
 {
 	public ref class integr
@@ -7,18 +8,13 @@ namespace calcLib
 		static const double c1 = 0.697222222;
 		static const double c2 = 1;
 		static const double c3 = 0.611111111;
-		void get_xvab_from_coords(size_t demensia, array<double>^ newcoords, array<double>^ lastcoords,
-			array<double>^ lastx, array<double>^ lastv, array<double>^ lasta,
-			double dt, array<double>^ %xp, array<double>^ %vp, array<double>^ %ap)
+		void get_xvab_from_coords(size_t demensia, Derivatives^ prevState, Derivatives^ %currState)
 		{
-			ap = gcnew array<double>(demensia);
-			vp = gcnew array<double>(demensia);
-			xp = gcnew array<double>(demensia);
 			for (size_t i = 0; i < demensia; i++)
 			{
-				xp[i] = lastx[i] + (newcoords[i] - lastcoords[i]) / dt;
+				/*xp[i] = lastx[i] + (newcoords[i] - lastcoords[i]) / dt;
 				vp[i] = lastv[i] + (xp[i] - lastx[i]) / dt;
-				ap[i] = lasta[i] + (vp[i] - lastv[i]) / dt;
+				ap[i] = lasta[i] + (vp[i] - lastv[i]) / dt;*/
 			}
 		};
 		void get_coordsvab_from_dipl(array<double>^ xp,
@@ -42,26 +38,36 @@ namespace calcLib
 			ap[2] = lasta[2] + (vp[2] - lastv[2]) / dt;
 		};
 
-		void euler(array<double>^ lastx, array<double>^ lastv, array<double>^ lasta, array<double>^ F,
-			double deltat, double massa, double l,
-			array<double>^ %xp, array<double>^ %vp, array<double>^ %ap)
+		void euler(int demensia, Derivatives^ prevState, Derivatives^ %currState, double massa, double l, double dt)
 		{
-			ap = gcnew array<double>(3);
-			vp = gcnew array<double>(3);
-			xp = gcnew array<double>(3);
-
-			ap[0] = F[0] / massa;
-			ap[1] = F[1] / massa;
-			ap[2] = F[2] / massa * l * l * 0.5;
-
-			vp[0] = lasta[0] * deltat;
-			vp[1] = lasta[1] * deltat;
-			vp[2] = lasta[2] * deltat;
-
-			xp[0] = lastv[0] * deltat;
-			xp[1] = lastv[1] * deltat;
-			xp[2] = lastv[2] * deltat;
+			for (int i = 0; i < demensia; i++)
+			{
+				currState->accl[i] = FtoA(massa, prevState->force[i], (ForcePlace)i, l);
+				currState->velos[i] = currState->accl[i] * dt;
+				currState->displ[i] = currState->velos[i] * dt;
+			}
 		};
+		double FtoA(double massa, double force, ForcePlace fp, double l)
+		{
+			switch (fp)
+			{
+			case calcLib::ForcePlace::N:
+				return force / massa;
+			case calcLib::ForcePlace::Qy:
+				return force / massa;
+			case calcLib::ForcePlace::Qz:
+				return force / massa;
+			case calcLib::ForcePlace::Mx:
+				return force / massa * l * l * 0.5;
+			case calcLib::ForcePlace::My:
+				return force / massa * l * l * 0.5;
+			case calcLib::ForcePlace::Mz:
+				return force / massa * l * l * 0.5;
+			default:
+				break;
+			}
+		};
+
 		void verlet(array<double>^  lastx, array<double>^  lastv, array<double>^ lasta, array<double>^  F,
 			double deltat, double massa, double l,
 			array<double>^ %xp, array<double>^  %vp, array<double>^  %ap)
