@@ -148,7 +148,7 @@
                 </hx:Viewport3DX.InputBindings>
                 <hx:AmbientLight3D />
                 <hx:DirectionalLight3D Direction="{Binding ThrDmod.Camera.LookDirection}" />
-                <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry}" />
+                <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry, Mode=TwoWay}" />
             </hx:Viewport3DX>
         </DockPanel>
         

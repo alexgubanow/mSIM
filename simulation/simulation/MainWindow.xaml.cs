@@ -15,7 +15,7 @@ namespace simulation
         {
             InitializeComponent();
             var Main = new MainViewModel();
-            Main.ThrDmod.modelView = this.view;
+            //Main.ThrDmod.modelView = this.view;
             this.DataContext = Main;
         }
 
