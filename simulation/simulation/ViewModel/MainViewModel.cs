@@ -1,6 +1,11 @@
 using calcLib;
 using GalaSoft.MvvmLight;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using HelixToolkit.Wpf.SharpDX;
+using Microsoft.Win32;
+using System.Windows.Input;
+using System.IO;
 using System.ComponentModel;
 using System.Windows;
 
@@ -34,9 +39,11 @@ namespace simulation.ViewModel
             ////    // Code runs "for real"
             ////}
             MainWin = new MainWin();
+            ThrDmod = new ThrDmod();
         }
 
         public MainWin MainWin { get; set; }
+        public ThrDmod ThrDmod { get; set; }
     }
 
     public class MainWin : INotifyPropertyChanged
@@ -88,4 +95,5 @@ namespace simulation.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
 }

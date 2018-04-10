@@ -14,7 +14,9 @@ namespace simulation
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            var Main = new MainViewModel();
+            Main.ThrDmod.modelView = this.view;
+            this.DataContext = Main;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -41,5 +43,6 @@ namespace simulation
         {
             Vm.MainWin.MaterialsVis = Visibility.Visible;
         }
+        
     }
 }

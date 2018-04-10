@@ -64,7 +64,7 @@ namespace calcLib
 			case calcLib::ForcePlace::Mz:
 				return force / massa * l * l * 0.5;
 			default:
-				break;
+				return 13;
 			}
 		};
 

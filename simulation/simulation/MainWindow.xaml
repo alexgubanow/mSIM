@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:simulation"
     xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     mc:Ignorable="d"
         Title="mSIM" Height="600" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
     <DockPanel>
@@ -30,8 +31,9 @@
             <!--Contextual Tabs-->
             <Fluent:RibbonTabItem Header="Simulation">
                 <Fluent:RibbonGroupBox Header="Load">
-                    <Fluent:Button Margin="0,5,0,0" Header="From file" Icon="{iconPacks:Material Kind=FolderOpen}" 
-                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
+                    <Fluent:Button x:Name="openFluentBtn" Margin="0,5,0,0" Header="From file" 
+                                   Icon="{iconPacks:Material Kind=FolderOpen}" 
+                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Itegration">
                     <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}" 
@@ -91,8 +93,16 @@
                           HorizontalAlignment="Right"
                           Value="Your value which is also used as content if no content is set." />
         </Fluent:StatusBar>
+        <StackPanel>
+            <Button Content="Open" Command="{Binding ThrDmod.OpenFileCommand}"/>
+            <Button              
+                Command="{Binding ThrDmod.ResetCameraCommand}">
+                Reset Camera
+            </Button>
+            <CheckBox IsChecked="{Binding ThrDmod.ShowWireframe}">Show Wireframe</CheckBox>
+        </StackPanel>
         <DockPanel LastChildFill="true">
-            <Expander ExpandDirection="Left" DockPanel.Dock="Right" Header="Charts">
+            <Expander ExpandDirection="Left" DockPanel.Dock="Right" >
                 <StackPanel>
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type RadioButton}">
@@ -114,10 +124,34 @@
                     <RadioButton  Content="Coord" />
                 </StackPanel>
             </Expander>
-            <WindowsFormsHost x:Name="CurveBox">
+            <!--<WindowsFormsHost x:Name="CurveBox">
                 <zed:ZedGraphControl x:Name="mainPlot"/>
-            </WindowsFormsHost>
+            </WindowsFormsHost>-->
+            <hx:Viewport3DX
+            x:Name="view"
+            Camera="{Binding ThrDmod.Camera}"
+            CameraMode="Inspect"
+            CameraRotationMode="Turnball" BackgroundColor="#595959"
+            EffectsManager="{Binding ThrDmod.EffectsManager}"
+            MSAA="Two">
+                <hx:Viewport3DX.InputBindings>
+                    <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                    <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                    <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                    <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                    <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                    <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                    <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                    <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                    <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                    <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+                </hx:Viewport3DX.InputBindings>
+                <hx:AmbientLight3D />
+                <hx:DirectionalLight3D Direction="{Binding ThrDmod.Camera.LookDirection}" />
+                <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry}" />
+            </hx:Viewport3DX>
         </DockPanel>
+        
     </DockPanel>
     
 </Fluent:RibbonWindow>
