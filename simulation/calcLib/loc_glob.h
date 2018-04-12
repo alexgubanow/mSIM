@@ -11,16 +11,12 @@ namespace calcLib
 	public ref class preob
 	{
 	public:
-		static inline double getL(double x1, double x2, double y1, double y2)
-		{
-			double ds = Math::Sqrt(Math::Pow(x2 - x1, 2) + Math::Pow(y2 - y1, 2));
-			return Math::Sqrt(Math::Pow(x2 - x1, 2) + Math::Pow(y2 - y1, 2));
-		}
+		static inline double getL(double x1, double x2, double y1, double y2) { return Math::Sqrt(Math::Pow(x2 - x1, 2) + Math::Pow(y2 - y1, 2)); }
 		static inline double getCosa(double L, double x1, double x2) { return (x2 - x1) / L; };
 		static inline double getSina(double L, double y1, double y2) { return (y2 - y1) / L; };
 		static void to_glob(array<double>^ offset, array<double>^ loc, double sina, double cosa, double L, array<double>^ %glob)
 		{
-			glob[x] = offset[x] +  cosa * loc[x] - sina * loc[y] + 0 * loc[z];
+			glob[x] = offset[x] + cosa * loc[x] - sina * loc[y] + 0 * loc[z];
 			glob[y] = offset[y] + cosa * loc[y] + sina * loc[x] + 0 * loc[z];
 			glob[z] = offset[z] + 0 * loc[y] + 0 * loc[y] + 1 * loc[z];
 		}

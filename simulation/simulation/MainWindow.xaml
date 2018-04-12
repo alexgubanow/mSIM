@@ -8,6 +8,7 @@
     xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     mc:Ignorable="d"
         Title="mSIM" Height="600" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
     <DockPanel>
@@ -93,63 +94,89 @@
                           HorizontalAlignment="Right"
                           Value="Your value which is also used as content if no content is set." />
         </Fluent:StatusBar>
-        <StackPanel>
-            <Button Content="Open" Command="{Binding ThrDmod.OpenFileCommand}"/>
-            <Button              
-                Command="{Binding ThrDmod.ResetCameraCommand}">
-                Reset Camera
-            </Button>
-            <CheckBox IsChecked="{Binding ThrDmod.ShowWireframe}">Show Wireframe</CheckBox>
-        </StackPanel>
         <DockPanel LastChildFill="true">
             <Expander ExpandDirection="Left" DockPanel.Dock="Right" >
                 <StackPanel>
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type RadioButton}">
-                            <Setter Property="RadioButton.Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <ToggleButton IsChecked="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                          Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </StackPanel.Resources>
-                    <RadioButton  Content="Object" IsChecked="True"/>
-                    <RadioButton  Content="Force" />
-                    <RadioButton  Content="Accl" />
-                    <RadioButton  Content="Velos" />
-                    <RadioButton  Content="Displ" />
-                    <RadioButton  Content="Coord" />
+                    <ListBox x:Name="plotSelector" SelectedIndex="{Binding MainWin.SelectedPlot}" >
+                        <ListBoxItem Content="Object"/>
+                        <ListBoxItem Content="Force"/>
+                        <ListBoxItem Content="Accl"/>
+                        <ListBoxItem Content="Velos"/>
+                        <ListBoxItem Content="Displ"/>
+                        <ListBoxItem Content="Coord"/>
+                    </ListBox>
                 </StackPanel>
             </Expander>
-            <!--<WindowsFormsHost x:Name="CurveBox">
-                <zed:ZedGraphControl x:Name="mainPlot"/>
-            </WindowsFormsHost>-->
-            <hx:Viewport3DX
+            <Slider DockPanel.Dock="Bottom"/>
+            <TabControl SelectedIndex="{Binding MainWin.SelectedPlot}">
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Visibility"
+                  Value="Collapsed" />
+                    </Style>
+                </TabControl.ItemContainerStyle>
+                <TabItem>
+                    <DockPanel LastChildFill="True">
+                        <StackPanel DockPanel.Dock="Left">
+                            <Button Content="Open" Command="{Binding ThrDmod.OpenFileCommand}"/>
+                            <Button              
+                Command="{Binding ThrDmod.ResetCameraCommand}">
+                                Reset Camera
+                            </Button>
+                            <CheckBox IsChecked="{Binding ThrDmod.ShowWireframe}">Show Wireframe</CheckBox>
+                        </StackPanel>
+                        <hx:Viewport3DX
+                            Margin="5,0,0,0"
             x:Name="view"
             Camera="{Binding ThrDmod.Camera}"
             CameraMode="Inspect"
             CameraRotationMode="Turnball" BackgroundColor="#595959"
             EffectsManager="{Binding ThrDmod.EffectsManager}"
             MSAA="Two">
-                <hx:Viewport3DX.InputBindings>
-                    <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
-                    <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
-                    <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
-                    <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
-                    <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
-                    <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
-                    <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
-                    <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
-                    <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                    <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
-                </hx:Viewport3DX.InputBindings>
-                <hx:AmbientLight3D />
-                <hx:DirectionalLight3D Direction="{Binding ThrDmod.Camera.LookDirection}" />
-                <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry, Mode=TwoWay}" />
-            </hx:Viewport3DX>
+                            <hx:Viewport3DX.InputBindings>
+                                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+                            </hx:Viewport3DX.InputBindings>
+                            <hx:AmbientLight3D />
+                            <hx:DirectionalLight3D Direction="{Binding ThrDmod.Camera.LookDirection}" />
+                            <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry, Mode=TwoWay}" />
+                        </hx:Viewport3DX>
+                    </DockPanel>
+                </TabItem>
+                <TabItem>
+                    <WindowsFormsHost>
+                        <zed:ZedGraphControl x:Name="forcePlot"/>
+                    </WindowsFormsHost>
+                </TabItem>
+                <TabItem>
+                    <WindowsFormsHost>
+                        <zed:ZedGraphControl x:Name="acclPlot"/>
+                    </WindowsFormsHost>
+                </TabItem>
+                <TabItem>
+                    <WindowsFormsHost>
+                        <zed:ZedGraphControl x:Name="velosPlot"/>
+                    </WindowsFormsHost>
+                </TabItem>
+                <TabItem>
+                    <WindowsFormsHost>
+                        <zed:ZedGraphControl x:Name="displPlot"/>
+                    </WindowsFormsHost>
+                </TabItem>
+                <TabItem>
+                    <WindowsFormsHost>
+                        <zed:ZedGraphControl x:Name="coordsPlot"/>
+                    </WindowsFormsHost>
+                </TabItem>
+            </TabControl>
         </DockPanel>
         
     </DockPanel>
