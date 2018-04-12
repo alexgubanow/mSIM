@@ -11,121 +11,131 @@
     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     mc:Ignorable="d"
         Title="mSIM" Height="600" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
-    <DockPanel>
-        <Fluent:Ribbon DockPanel.Dock="Top" SelectedTabChanged="Ribbon_SelectedTabChanged" 
-                       SelectedTabIndex="{Binding MainWin.SelectedRibbonTab, Mode=TwoWay}">
-            <!--Backstage-->
-            <Fluent:Ribbon.Menu>
-                <Fluent:Backstage>
-                </Fluent:Backstage>
-            </Fluent:Ribbon.Menu>
 
-            <!--Contextual Tab Groups-->
-            <Fluent:Ribbon.ContextualGroups>
-                <Fluent:RibbonContextualTabGroup x:Name="MaterialsGroup"
-                                     Header="Object" 
+    <Grid>
+        <Button VerticalAlignment="Bottom" x:Name="btn_abrt" Content="ABORT" Click="btn_abrt_Click"
+                Height="80" Visibility="Collapsed" Panel.ZIndex="10002" />
+        <Controls:ProgressRing IsActive="True" Panel.ZIndex="10001" x:Name="overlayring"
+                               Foreground="White" Visibility="Collapsed" />
+        <DockPanel x:Name="mainPanel">
+        <Rectangle Panel.ZIndex="10000" x:Name="overlayrect" Fill="DarkGray" Opacity=".5"
+                   Visibility="Collapsed" />
+            <Fluent:Ribbon DockPanel.Dock="Top" SelectedTabChanged="Ribbon_SelectedTabChanged"
+                       SelectedTabIndex="{Binding MainWin.SelectedRibbonTab, Mode=TwoWay}">
+                <!--Backstage-->
+                <Fluent:Ribbon.Menu>
+                    <Fluent:Backstage>
+                    </Fluent:Backstage>
+                </Fluent:Ribbon.Menu>
+
+                <!--Contextual Tab Groups-->
+                <Fluent:Ribbon.ContextualGroups>
+                    <Fluent:RibbonContextualTabGroup x:Name="MaterialsGroup"
+                                     Header="Object"
                                      Visibility="{Binding MainWin.MaterialsVis}"
-                                     Background="Green" 
+                                     Background="Green"
                                      BorderBrush="Green" />
-            </Fluent:Ribbon.ContextualGroups>
-            <!--Tabs-->
-            <!--Contextual Tabs-->
-            <Fluent:RibbonTabItem Header="Simulation">
-                <Fluent:RibbonGroupBox Header="Load">
-                    <Fluent:Button x:Name="openFluentBtn" Margin="0,5,0,0" Header="From file" 
-                                   Icon="{iconPacks:Material Kind=FolderOpen}" 
-                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}"/>
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Itegration">
-                    <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}" 
+                </Fluent:Ribbon.ContextualGroups>
+                <!--Tabs-->
+                <!--Contextual Tabs-->
+                <Fluent:RibbonTabItem Header="Simulation">
+                    <Fluent:RibbonGroupBox Header="Load">
+                        <Fluent:Button x:Name="openFluentBtn" Margin="0,5,0,0" Header="From file"
+                                   Icon="{iconPacks:Material Kind=FolderOpen}"
+                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="Itegration">
+                        <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}"
                                      MinWidth="125" />
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Model">
-                    <Fluent:ComboBox Margin="0,5,0,0" Header="Model" ItemsSource="{Binding MainWin.mModels}" 
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="Model">
+                        <Fluent:ComboBox Margin="0,5,0,0" Header="Model" ItemsSource="{Binding MainWin.mModels}"
                                      MinWidth="125" />
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox x:Name="objGroupBox" Header="Object" GotFocus="objGroupBox_GotFocus">
-                    <Fluent:ComboBox Margin="0,5,0,0" x:Name="objComboBox" Header="Template" 
-                                     ItemsSource="{Binding MainWin.Objs}" 
-                                     MinWidth="125" GotFocus="objComboBox_GotFocus"/>
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
-            <Fluent:RibbonTabItem Header="Load">
-                <Fluent:RibbonGroupBox Header="Group">
-                    <Fluent:Button Header="Green" />
-                    <Fluent:Button Header="Grey"  />
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
-            <Fluent:RibbonTabItem Header="Material Parameters" 
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox x:Name="objGroupBox" Header="Object" GotFocus="objGroupBox_GotFocus">
+                        <Fluent:ComboBox Margin="0,5,0,0" x:Name="objComboBox" Header="Template"
+                                     ItemsSource="{Binding MainWin.Objs}" MinWidth="125" />
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="calc" GotFocus="objGroupBox_GotFocus">
+                        <Fluent:Button Header="start" x:Name="startFluentbtn" Click="startFluentbtn_Click"
+                                   Icon="{iconPacks:Material Kind=Restart}"
+                                   LargeIcon="{iconPacks:Material Kind=Restart, Height=28, Width=28}" />
+                    </Fluent:RibbonGroupBox>
+                </Fluent:RibbonTabItem>
+                <Fluent:RibbonTabItem Header="Load">
+                    <Fluent:RibbonGroupBox Header="Group">
+                        <Fluent:Button Header="Green" />
+                        <Fluent:Button Header="Grey" />
+                    </Fluent:RibbonGroupBox>
+                </Fluent:RibbonTabItem>
+                <Fluent:RibbonTabItem Header="Material Parameters"
                                   Group="{Binding Source={x:Reference MaterialsGroup}}">
-                <Fluent:RibbonGroupBox Header="Demensions">
-                    <local:numPowTen Margin="0,5,0,0" Clabel="L" />
-                    <local:numPowTen Margin="0,5,0,0" Clabel="b" />
-                <Border Width="1" Margin="3" Height="175" Visibility="Visible" Background="#FFB9C9DA" />
-                    <local:numPowTen Margin="0,5,0,0" Clabel="h " />
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Physics">
-                    <local:numPowTen Margin="0,5,0,0" Clabel="ro" />
-                    <local:numPowTen Margin="0,5,0,0" Clabel="E " />
-                </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Initial state">
-                    <local:numPowTen Margin="0,5,0,0" Clabel="V0" />
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
-            
-            
-        </Fluent:Ribbon>
-        <Fluent:StatusBar DockPanel.Dock="Bottom">
-            <Fluent:StatusBarItem Title="Left placed item"
+                    <Fluent:RibbonGroupBox Header="Demensions">
+                        <local:numPowTen Margin="0,5,0,0" Clabel="L" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="b" />
+                        <Border Width="1" Margin="3" Height="175" Visibility="Visible" Background="#FFB9C9DA" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="h " />
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="Physics">
+                        <local:numPowTen Margin="0,5,0,0" Clabel="ro" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="E " />
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="Initial state">
+                        <local:numPowTen Margin="0,5,0,0" Clabel="V0" />
+                    </Fluent:RibbonGroupBox>
+                </Fluent:RibbonTabItem>
+            </Fluent:Ribbon>
+            <Fluent:StatusBar DockPanel.Dock="Bottom">
+                <Fluent:StatusBarItem Title="Left placed item"
                           Value="150"
                           HorizontalAlignment="Left">
-                <TextBlock Text="150 px" />
-            </Fluent:StatusBarItem>
+                    <TextBlock Text="150 px" />
+                </Fluent:StatusBarItem>
 
-            <Separator HorizontalAlignment="Left" />
+                <Separator HorizontalAlignment="Left" />
 
-            <Fluent:StatusBarItem Title="Second left placed item"
+                <Fluent:StatusBarItem Title="Second left placed item"
                           Value="Value shown in ContextMenu"
                           ToolTip="Your ToolTip"
                           Content="Content shown in StatusBar"
                           HorizontalAlignment="Left" />
 
-            <Fluent:StatusBarItem Title="Item placed on the right side"
+                <Fluent:StatusBarItem Title="Item placed on the right side"
                           HorizontalAlignment="Right"
                           Value="Your value which is also used as content if no content is set." />
-        </Fluent:StatusBar>
-        <DockPanel LastChildFill="true">
-            <Expander ExpandDirection="Left" DockPanel.Dock="Right" >
-                <StackPanel>
-                    <ListBox x:Name="plotSelector" SelectedIndex="{Binding MainWin.SelectedPlot}" >
-                        <ListBoxItem Content="Object"/>
-                        <ListBoxItem Content="Force"/>
-                        <ListBoxItem Content="Accl"/>
-                        <ListBoxItem Content="Velos"/>
-                        <ListBoxItem Content="Displ"/>
-                        <ListBoxItem Content="Coord"/>
-                    </ListBox>
-                </StackPanel>
-            </Expander>
-            <Slider DockPanel.Dock="Bottom"/>
-            <TabControl SelectedIndex="{Binding MainWin.SelectedPlot}">
-                <TabControl.ItemContainerStyle>
-                    <Style TargetType="{x:Type TabItem}">
-                        <Setter Property="Visibility"
+            </Fluent:StatusBar>
+            <DockPanel LastChildFill="true">
+                <Expander ExpandDirection="Left" DockPanel.Dock="Right">
+                    <StackPanel>
+                        <ListBox x:Name="plotSelector" SelectedIndex="{Binding MainWin.SelectedPlot}">
+                            <ListBoxItem Content="Object" />
+                            <ListBoxItem Content="Force" />
+                            <ListBoxItem Content="Accl" />
+                            <ListBoxItem Content="Velos" />
+                            <ListBoxItem Content="Displ" />
+                            <ListBoxItem Content="Coord" />
+                        </ListBox>
+                    </StackPanel>
+                </Expander>
+                <Slider DockPanel.Dock="Bottom" />
+                <TabControl SelectedIndex="{Binding MainWin.SelectedPlot}">
+                    <TabControl.ItemContainerStyle>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="Visibility"
                   Value="Collapsed" />
-                    </Style>
-                </TabControl.ItemContainerStyle>
-                <TabItem>
-                    <DockPanel LastChildFill="True">
-                        <StackPanel DockPanel.Dock="Left">
-                            <Button Content="Open" Command="{Binding ThrDmod.OpenFileCommand}"/>
-                            <Button              
+                        </Style>
+                    </TabControl.ItemContainerStyle>
+                    <TabItem>
+                        <DockPanel LastChildFill="True">
+                            <StackPanel DockPanel.Dock="Left">
+                                <Button Content="Open" Command="{Binding ThrDmod.OpenFileCommand}" />
+                                <Button
                 Command="{Binding ThrDmod.ResetCameraCommand}">
-                                Reset Camera
-                            </Button>
-                            <CheckBox IsChecked="{Binding ThrDmod.ShowWireframe}">Show Wireframe</CheckBox>
-                        </StackPanel>
-                        <hx:Viewport3DX
+                                    Reset Camera
+                                </Button>
+                                <CheckBox IsChecked="{Binding ThrDmod.ShowWireframe}">Show Wireframe</CheckBox>
+                            </StackPanel>
+                            <hx:Viewport3DX
                             Margin="5,0,0,0"
             x:Name="view"
             Camera="{Binding ThrDmod.Camera}"
@@ -133,46 +143,46 @@
             CameraRotationMode="Turnball" BackgroundColor="#595959"
             EffectsManager="{Binding ThrDmod.EffectsManager}"
             MSAA="Two">
-                            <hx:Viewport3DX.InputBindings>
-                                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
-                                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
-                                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
-                                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
-                                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
-                                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
-                                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
-                                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
-                                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
-                            </hx:Viewport3DX.InputBindings>
-                            <hx:AmbientLight3D />
-                            <hx:DirectionalLight3D Direction="{Binding ThrDmod.Camera.LookDirection}" />
-                            <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry, Mode=TwoWay}" />
-                        </hx:Viewport3DX>
-                    </DockPanel>
-                </TabItem>
-                <TabItem>
-                    <DockPanel>
-                        <StackPanel>
-                            <Button Name="addFORCE" Click="addFORCE_Click"></Button>
-                        </StackPanel>
-                        <local:zgWPF x:Name="fPlot" graphPane="{Binding MainWin.forceAx.graphPane, Mode=TwoWay}" />
-                    </DockPanel>
-                </TabItem>
-                <TabItem>
-                    <local:zgWPF x:Name="aPlot" graphPane="{Binding MainWin.acclAx.graphPane, Mode=TwoWay}" />
-                </TabItem>
-                <TabItem>
-                    <local:zgWPF x:Name="vPlot" graphPane="{Binding MainWin.velosAx.graphPane, Mode=TwoWay}" />
-                </TabItem>
-                <TabItem>
-                    <local:zgWPF x:Name="dPlot" graphPane="{Binding MainWin.displAx.graphPane, Mode=TwoWay}" />
-                </TabItem>
-                <TabItem>
-                    <local:zgWPF x:Name="cPlot" graphPane="{Binding MainWin.coordAx.graphPane, Mode=TwoWay}" />
-                </TabItem>
-            </TabControl>
+                                <hx:Viewport3DX.InputBindings>
+                                    <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                                    <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                                    <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                                    <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                                    <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                                    <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                                    <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                                    <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                                    <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                                    <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+                                </hx:Viewport3DX.InputBindings>
+                                <hx:AmbientLight3D />
+                                <hx:DirectionalLight3D Direction="{Binding ThrDmod.Camera.LookDirection}" />
+                                <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry, Mode=TwoWay}" />
+                            </hx:Viewport3DX>
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem>
+                        <DockPanel>
+                            <StackPanel>
+                                <Button Name="addFORCE" Click="addFORCE_Click"></Button>
+                            </StackPanel>
+                            <local:zgWPF x:Name="fPlot" graphPane="{Binding MainWin.forceAx.graphPane, Mode=TwoWay}" />
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem>
+                        <local:zgWPF x:Name="aPlot" graphPane="{Binding MainWin.acclAx.graphPane, Mode=TwoWay}" />
+                    </TabItem>
+                    <TabItem>
+                        <local:zgWPF x:Name="vPlot" graphPane="{Binding MainWin.velosAx.graphPane, Mode=TwoWay}" />
+                    </TabItem>
+                    <TabItem>
+                        <local:zgWPF x:Name="dPlot" graphPane="{Binding MainWin.displAx.graphPane, Mode=TwoWay}" />
+                    </TabItem>
+                    <TabItem>
+                        <local:zgWPF x:Name="cPlot" graphPane="{Binding MainWin.coordAx.graphPane, Mode=TwoWay}" />
+                    </TabItem>
+                </TabControl>
+            </DockPanel>
         </DockPanel>
-    </DockPanel>
-    
+    </Grid>
 </Fluent:RibbonWindow>
