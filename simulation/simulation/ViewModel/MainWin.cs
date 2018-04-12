@@ -15,7 +15,7 @@ namespace simulation.ViewModel
             Objs = new List<string>() { "blank", "metal", "chorda", "artChorda", "glassPart" };
             forceAx = new forceAx();
         }
-        forceAx forceAx { get; set; }
+        public forceAx forceAx { get; set; }
 
         private int _SelectedPlot;
         public int SelectedPlot { get => _SelectedPlot; set { _SelectedPlot = value; RaisePropertyChanged("SelectedPlot"); } }

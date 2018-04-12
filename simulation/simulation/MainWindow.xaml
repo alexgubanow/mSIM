@@ -152,14 +152,17 @@
                     </DockPanel>
                 </TabItem>
                 <TabItem>
-                    <WindowsFormsHost>
-                        <zed:ZedGraphControl x:Name="forcePlot"/>
-                    </WindowsFormsHost>
+                    <DockPanel>
+                        <StackPanel>
+                            <TextBox DockPanel.Dock="Top" Text="{Binding MainWin.forceAx.Title, Mode=TwoWay}"/>
+                            <Button Name="addFORCE" Click="addFORCE_Click"></Button>
+                        </StackPanel>
+                        <local:zgWPF x:Name="fPlot" graphPane="{Binding MainWin.forceAx.graphPane, Mode=TwoWay}" 
+                                     gpTitle="{Binding MainWin.forceAx.Title}" XAxisTitle="juhiouh"/>
+                    </DockPanel>
                 </TabItem>
                 <TabItem>
-                    <WindowsFormsHost>
-                        <zed:ZedGraphControl x:Name="acclPlot"/>
-                    </WindowsFormsHost>
+                    <local:zgWPF gpTitle="ds"/>
                 </TabItem>
                 <TabItem>
                     <WindowsFormsHost>
@@ -178,7 +181,6 @@
                 </TabItem>
             </TabControl>
         </DockPanel>
-        
     </DockPanel>
     
 </Fluent:RibbonWindow>

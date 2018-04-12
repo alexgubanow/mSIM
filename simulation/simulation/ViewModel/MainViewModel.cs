@@ -40,5 +40,6 @@ namespace simulation.ViewModel
 
         public MainWin MainWin { get; set; }
         public ThrDmod ThrDmod { get; set; }
+        
     }
 }
