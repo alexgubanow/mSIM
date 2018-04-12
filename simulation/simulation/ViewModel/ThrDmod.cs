@@ -1,348 +1,183 @@
-﻿using HelixToolkit.Wpf.SharpDX;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Windows.Input;
 using System.ComponentModel;
+using HelixToolkit.Wpf;
+using System.Windows.Threading;
+using System.Windows.Media.Media3D;
+using System.Windows;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace simulation.ViewModel
 {
-    public abstract class BaseViewModel : ObservableObject, IDisposable
+    public class ThrDmod : Observable
     {
-        public const string Orthographic = "Orthographic Camera";
+        private const string OpenFileFilter = "3D model files (*.3ds;*.obj;*.lwo;*.stl)|*.3ds;*.obj;*.objz;*.lwo;*.stl";
 
-        public const string Perspective = "Perspective Camera";
+        private const string TitleFormatString = "3D model viewer - {0}";
 
-        private string cameraModel;
+        private readonly IFileDialogService fileDialogService;
 
-        private Camera camera;
+        private readonly IHelixViewport3D viewport;
 
-        private IRenderTechnique renderTechnique;
+        private readonly Dispatcher dispatcher;
 
-        private string subTitle;
+        private string currentModelPath;
 
-        private string title;
+        private string applicationTitle;
 
-        public string Title
+        private double expansion;
+
+        private Model3D currentModel;
+
+        public ThrDmod(IFileDialogService fds, HelixViewport3D viewport)
+        {
+            if (viewport == null)
+            {
+                throw new ArgumentNullException("viewport");
+            }
+
+            this.dispatcher = Dispatcher.CurrentDispatcher;
+            this.Expansion = 1;
+            this.fileDialogService = fds;
+            this.viewport = viewport;
+            this.FileOpenCommand = new DelegateCommand(this.FileOpen);
+            this.FileExportCommand = new DelegateCommand(this.FileExport);
+            this.FileExitCommand = new DelegateCommand(FileExit);
+            this.ViewZoomExtentsCommand = new DelegateCommand(this.ViewZoomExtents);
+            this.EditCopyXamlCommand = new DelegateCommand(this.CopyXaml);
+            this.ApplicationTitle = "3D Model viewer";
+            this.Elements = new List<VisualViewModel>();
+            foreach (var c in viewport.Children)
+            {
+                this.Elements.Add(new VisualViewModel(c));
+            }
+        }
+
+        public string CurrentModelPath
         {
             get
             {
-                return title;
+                return this.currentModelPath;
             }
+
             set
             {
-                SetValue(ref title, value, "Title");
+                this.currentModelPath = value;
+                this.RaisePropertyChanged("CurrentModelPath");
             }
         }
 
-        public string SubTitle
+        public string ApplicationTitle
         {
             get
             {
-                return subTitle;
+                return this.applicationTitle;
             }
+
             set
             {
-                SetValue(ref subTitle, value, "SubTitle");
+                this.applicationTitle = value;
+                this.RaisePropertyChanged("ApplicationTitle");
             }
         }
 
-        public IRenderTechnique RenderTechnique
+        public List<VisualViewModel> Elements { get; set; }
+
+        public double Expansion
         {
             get
             {
-                return renderTechnique;
+                return this.expansion;
             }
+
             set
             {
-                SetValue(ref renderTechnique, value, "RenderTechnique");
+                if (!this.expansion.Equals(value))
+                {
+                    this.expansion = value;
+                    this.RaisePropertyChanged("Expansion");
+                }
             }
         }
 
-        public List<string> ShadingModelCollection { get; private set; }
-
-        public List<string> CameraModelCollection { get; private set; }
-
-        public string CameraModel
+        public Model3D CurrentModel
         {
             get
             {
-                return cameraModel;
+                return this.currentModel;
             }
+
             set
             {
-                if (SetValue(ref cameraModel, value, "CameraModel"))
-                {
-                    OnCameraModelChanged();
-                }
+                this.currentModel = value;
+                this.RaisePropertyChanged("CurrentModel");
             }
         }
 
-        public Camera Camera
-        {
-            get
-            {
-                return camera;
-            }
+        public ICommand FileOpenCommand { get; set; }
 
-            protected set
-            {
-                SetValue(ref camera, value, "Camera");
-                CameraModel = value is PerspectiveCamera
-                                       ? Perspective
-                                       : value is OrthographicCamera ? Orthographic : null;
-            }
+        public ICommand FileExportCommand { get; set; }
+
+        public ICommand FileExitCommand { get; set; }
+
+        public ICommand HelpAboutCommand { get; set; }
+
+        public ICommand ViewZoomExtentsCommand { get; set; }
+
+        public ICommand EditCopyXamlCommand { get; set; }
+
+        private static void FileExit()
+        {
+            Application.Current.Shutdown();
         }
 
-        public IEffectsManager EffectsManager { get; protected set; }
-
-        private string renderTechniqueName = DefaultRenderTechniqueNames.Blinn;
-        public string RenderTechniqueName
+        private void FileExport()
         {
-            set
-            {
-                renderTechniqueName = value;
-                RenderTechnique = EffectsManager[value];
-            }
-            get
-            {
-                return renderTechniqueName;
-            }
-        }
-
-        protected OrthographicCamera defaultOrthographicCamera = new OrthographicCamera { Position = new System.Windows.Media.Media3D.Point3D(0, 0, 5), LookDirection = new System.Windows.Media.Media3D.Vector3D(-0, -0, -5), UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0), NearPlaneDistance = 1, FarPlaneDistance = 100 };
-
-        protected PerspectiveCamera defaultPerspectiveCamera = new PerspectiveCamera { Position = new System.Windows.Media.Media3D.Point3D(0, 0, 5), LookDirection = new System.Windows.Media.Media3D.Vector3D(-0, -0, -5), UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0), NearPlaneDistance = 0.5, FarPlaneDistance = 150 };
-
-        public event EventHandler CameraModelChanged;
-
-        protected BaseViewModel()
-        {
-            // camera models
-            CameraModelCollection = new List<string>()
-            {
-                Orthographic,
-                Perspective,
-            };
-
-            // on camera changed callback
-            CameraModelChanged += (s, e) =>
-            {
-                if (cameraModel == Orthographic)
-                {
-                    if (!(Camera is OrthographicCamera))
-                        Camera = defaultOrthographicCamera;
-                }
-                else if (cameraModel == Perspective)
-                {
-                    if (!(Camera is PerspectiveCamera))
-                        Camera = defaultPerspectiveCamera;
-                }
-                else
-                {
-                    throw new HelixToolkitException("Camera Model Error.");
-                }
-            };
-
-            // default camera model
-            CameraModel = Perspective;
-
-            Title = "Demo (HelixToolkitDX)";
-            SubTitle = "Default Base View Model";
-        }
-
-        protected virtual void OnCameraModelChanged()
-        {
-            var eh = CameraModelChanged;
-            if (eh != null)
-            {
-                eh(this, new EventArgs());
-            }
-        }
-
-        public static MemoryStream LoadFileToMemory(string filePath)
-        {
-            using (var file = new FileStream(filePath, FileMode.Open))
-            {
-                var memory = new MemoryStream();
-                file.CopyTo(memory);
-                return memory;
-            }
-        }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-                if (EffectsManager != null)
-                {
-                    var effectManager = EffectsManager as IDisposable;
-                    Disposer.RemoveAndDispose(ref effectManager);
-                }
-                disposedValue = true;
-                GC.SuppressFinalize(this);
-            }
-        }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        ~BaseViewModel()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(false);
-        }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
-    }
-
-    public class ThrDmod : BaseViewModel
-    {
-        private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;";
-
-        public Element3DCollection ModelGeometry { get; private set; }
-
-        public Viewport3DX modelView
-        {
-            get;
-            set;
-        }
-
-        private bool showWireframe = false;
-        public bool ShowWireframe
-        {
-            set
-            {
-                if (SetValue(ref showWireframe, value))
-                {
-                    foreach (var model in ModelGeometry)
-                    {
-                        (model as MeshGeometryModel3D).RenderWireframe = value;
-                    }
-                }
-            }
-            get
-            {
-                return showWireframe;
-            }
-        }
-
-        public ICommand OpenFileCommand
-        {
-            get; set;
-        }
-
-        public ICommand ResetCameraCommand
-        {
-            set; get;
-        }
-
-
-        public ThrDmod()
-        {
-            this.OpenFileCommand = new DelegateCommand(this.OpenFile);
-            this.ModelGeometry = new Element3DCollection();
-            EffectsManager = new DefaultEffectsManager();
-            Camera = new OrthographicCamera()
-            {
-                LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10),
-                Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
-                FarPlaneDistance = 10000,
-                NearPlaneDistance = 0.1
-            };
-            ResetCameraCommand = new DelegateCommand(() => { Camera.Reset(); });
-        }
-
-        public void OpenFile()
-        {
-            string path = OpenFileDialog(OpenFileFilter);
+            var path = this.fileDialogService.SaveFileDialog(null, null, Exporters.Filter, ".png");
             if (path == null)
             {
                 return;
             }
-            if (Path.GetExtension(path).ToLower() == ".3ds")
-            {
-                Load3ds(path);
-            }
-            else if (Path.GetExtension(path).ToLower() == ".obj")
-            {
-                LoadObj(path);
-            }
-            else if (Path.GetExtension(path).ToLower() == ".stl")
-            {
-                LoadStl(path);
-            }
-        }
-        public void Load3ds(string path)
-        {
-            var reader = new StudioReader();
-            var objCol = reader.Read(path);
-            AttachModelList(objCol);
 
-        }
-        public void LoadObj(string path)
-        {
-            var reader = new ObjReader();
-            var objCol = reader.Read(path);
-            AttachModelList(objCol);
+            this.viewport.Export(path);
         }
 
-        public void LoadStl(string path)
+        private void CopyXaml()
         {
-            var reader = new StLReader();
-            var objCol = reader.Read(path);
-            AttachModelList(objCol);
+            var rd = XamlExporter.WrapInResourceDictionary(this.CurrentModel);
+            Clipboard.SetText(XamlHelper.GetXaml(rd));
         }
-        public void AttachModelList(List<Object3D> objs)
+
+        private void ViewZoomExtents()
         {
-            this.ModelGeometry = new Element3DCollection();
-            foreach (var ob in objs)
+            this.viewport.ZoomExtents(500);
+        }
+
+        private async void FileOpen()
+        {
+            this.CurrentModelPath = this.fileDialogService.OpenFileDialog("models", null, OpenFileFilter, ".3ds");
+            this.CurrentModel = await this.LoadAsync(this.CurrentModelPath, true);
+            this.ApplicationTitle = string.Format(TitleFormatString, this.CurrentModelPath);
+            this.viewport.ZoomExtents(0);
+        }
+
+        private async Task<Model3DGroup> LoadAsync(string model3DPath, bool freeze)
+        {
+            return await Task.Factory.StartNew(() =>
             {
-                var s = new MeshGeometryModel3D
+                var mi = new ModelImporter();
+
+                if (freeze)
                 {
-                    Geometry = ob.Geometry,
-                    Material = ob.Material,
-                };
-                if (ob.Transform != null && ob.Transform.Count > 0)
-                {
-                    s.Instances = ob.Transform;
+                    // Alt 1. - freeze the model 
+                    return mi.Load(model3DPath, null, true);
                 }
-                this.ModelGeometry.Add(s);
 
-            }
-            this.OnPropertyChanged("ModelGeometry");
-        }
-        private string OpenFileDialog(string filter)
-        {
-            var d = new OpenFileDialog();
-            d.CustomPlaces.Clear();
-
-
-            d.Filter = filter;
-
-            if (!d.ShowDialog().Value)
-            {
-                return null;
-            }
-
-            return d.FileName;
+                // Alt. 2 - create the model on the UI dispatcher
+                return mi.Load(model3DPath, this.dispatcher);
+            });
         }
     }
 }

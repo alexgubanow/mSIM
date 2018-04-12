@@ -9,6 +9,7 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:h="http://helix-toolkit.org/wpf"
     mc:Ignorable="d"
         Title="mSIM" Height="600" Width="800" DataContext="{Binding Main, Source={StaticResource Locator}}">
 
@@ -18,7 +19,7 @@
         <Controls:ProgressRing IsActive="True" Panel.ZIndex="10001" x:Name="overlayring"
                                Foreground="White" Visibility="Collapsed" />
         <DockPanel x:Name="mainPanel">
-        <Rectangle Panel.ZIndex="10000" x:Name="overlayrect" Fill="DarkGray" Opacity=".5"
+            <Rectangle Panel.ZIndex="10000" x:Name="overlayrect" Fill="DarkGray" Opacity=".5"
                    Visibility="Collapsed" />
             <Fluent:Ribbon DockPanel.Dock="Top" SelectedTabChanged="Ribbon_SelectedTabChanged"
                        SelectedTabIndex="{Binding MainWin.SelectedRibbonTab, Mode=TwoWay}">
@@ -109,7 +110,7 @@
                           Value="Your value which is also used as content if no content is set." />
             </Fluent:StatusBar>
             <DockPanel LastChildFill="true">
-                <Expander ExpandDirection="Left" DockPanel.Dock="Right">
+                <Expander ExpandDirection="Left" DockPanel.Dock="Right" >
                     <StackPanel>
                         <ListBox x:Name="plotSelector" SelectedIndex="{Binding MainWin.SelectedPlot}">
                             <ListBoxItem Content="Object" />
@@ -132,21 +133,19 @@
                     <TabItem>
                         <DockPanel LastChildFill="True">
                             <StackPanel DockPanel.Dock="Left">
-                                <Button Content="Open" Command="{Binding ThrDmod.OpenFileCommand}" />
-                                <Button
-                Command="{Binding ThrDmod.ResetCameraCommand}">
-                                    Reset Camera
-                                </Button>
-                                <CheckBox IsChecked="{Binding ThrDmod.ShowWireframe}">Show Wireframe</CheckBox>
+                                <Button Content="Open" Command="{Binding ThrDmod.FileOpenCommand}" />
                             </StackPanel>
-                            <hx:Viewport3DX
-                            Margin="5,0,0,0"
-            x:Name="view"
-            Camera="{Binding ThrDmod.Camera}"
-            CameraMode="Inspect"
-            CameraRotationMode="Turnball" BackgroundColor="#595959"
-            EffectsManager="{Binding ThrDmod.EffectsManager}"
-            MSAA="Two">
+                            <h:HelixViewport3D x:Name="view1" CameraRotationMode="Turntable" ModelUpDirection="0,1,0" 
+                                               ShowFrameRate="True" Background="LightGray"
+                                               ShowCoordinateSystem="True" ShowViewCube="False" ShowCameraTarget="False">
+                                <ModelVisual3D x:Name="root1">
+                                    <h:DefaultLights/>
+                                    <ModelVisual3D Content="{Binding ThrDmod.CurrentModel}"/>
+                                </ModelVisual3D>
+                            </h:HelixViewport3D>
+                            <!--<hx:Viewport3DX Margin="5,0,0,0" x:Name="view" Camera="{Binding ThrDmod.Camera}"
+                                            CameraMode="Inspect" CameraRotationMode="Turnball" BackgroundColor="#595959"
+                                            EffectsManager="{Binding ThrDmod.EffectsManager}" MSAA="Two">
                                 <hx:Viewport3DX.InputBindings>
                                     <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                                     <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -162,7 +161,7 @@
                                 <hx:AmbientLight3D />
                                 <hx:DirectionalLight3D Direction="{Binding ThrDmod.Camera.LookDirection}" />
                                 <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry, Mode=TwoWay}" />
-                            </hx:Viewport3DX>
+                            </hx:Viewport3DX>-->
                         </DockPanel>
                     </TabItem>
                     <TabItem>

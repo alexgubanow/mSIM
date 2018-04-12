@@ -1,7 +1,7 @@
-﻿using simulation.ViewModel;
+﻿using calcLib;
+using simulation.ViewModel;
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -16,15 +16,16 @@ namespace simulation
     public partial class MainWindow
     {
         [DllImport("shlwapi.dll")]
-        static extern int ColorHLSToRGB(int H, int L, int S);
+        private static extern int ColorHLSToRGB(int H, int L, int S);
 
         public MainWindow()
         {
             InitializeComponent();
             var Main = new MainViewModel();
-            //Main.ThrDmod.modelView = this.view;
+            Main.ThrDmod = new ThrDmod(new FileDialogService(), view1);
             this.DataContext = Main;
         }
+
         public MainViewModel Vm { get { return (MainViewModel)DataContext; } }
 
         private void updZed(ZedGraphControl zedGraph)
@@ -32,9 +33,11 @@ namespace simulation
             zedGraph.AxisChange();
             zedGraph.Invalidate();
         }
+
         private void ApplyEffect(Window win)
         {
-            Dispatcher.BeginInvoke(new Action(() => {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
                 System.Windows.Media.Effects.BlurEffect objBlur = new System.Windows.Media.Effects.BlurEffect();
                 objBlur.Radius = 4;
                 //mngr.Visibility = Visibility.Collapsed;
@@ -44,9 +47,11 @@ namespace simulation
                 mainPanel.Effect = objBlur;
             }));
         }
+
         private void ClearEffect(Window win)
         {
-            Dispatcher.BeginInvoke(new Action(() => {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
                 mainPanel.Effect = null;
                 //mngr.Visibility = Visibility.Visible;
                 btn_abrt.Visibility = Visibility.Collapsed;
@@ -67,6 +72,7 @@ namespace simulation
         {
             Vm.MainWin.MaterialsVis = Visibility.Visible;
         }
+
         private double f(double x)
         {
             if (x == 0)
@@ -76,28 +82,32 @@ namespace simulation
 
             return Math.Sin(x) / x;
         }
-        int isad = 0;
+
+        private int isad = 0;
         private Random rnd = new Random();
-        Thread UpdZedThrd;
+        private Thread UpdZedThrd;
+
         private void addFORCE_Click(object sender, RoutedEventArgs e)
         {// Создадим список точек
             PointPairList list = new PointPairList();
 
-            double xmin = -50-isad;
-            double xmax = 50+ isad;
+            double xmin = -50 - isad;
+            double xmax = 50 + isad;
 
             // Заполняем список точек
-            for (double x = xmin; x <= xmax; x += 0.01+(isad/10))
+            for (double x = xmin; x <= xmax; x += 0.01 + (isad / 10))
             {
                 // добавим в список точку
                 list.Add(x, f(x));
             }
-            isad+=10;
-            UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
+            isad += 10;
             Vm.MainWin.forceAx.graphPane.AddCurve("Cosc", list, Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), SymbolType.None);
+            UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
             UpdZedThrd.Start();
         }
-        Thread srtThread;
+
+        private Thread srtThread;
+
         private void startFluentbtn_Click(object sender, RoutedEventArgs e)
         {
             Vm.MainWin.SelectedPlot = 0;
@@ -105,10 +115,63 @@ namespace simulation
             srtThread.Start();
         }
 
+        public LinearModel.Model linearModel { get; private set; }
+
         private void calc()
         {
             ApplyEffect(this);
-            Thread.Sleep(10000);
+            int counts = 9000;
+            double dt = 0.000003;
+            int elements = 5;
+            //int points = elements * 2;
+            int nodes = elements + 1;
+            double Length = 180;
+            double l = Length / elements * Math.Pow(10, -3);
+            double b = 50 * Math.Pow(10, -3);
+            double h = 0.1 * Math.Pow(10, -3);
+            double massa = 0.1;
+            linearModel = new LinearModel.Model(counts, dt, nodes, elements, massa, l, b, h);
+            linearModel.applyLoad(100, (1 * Math.Pow(10, -2)));
+            linearModel.calcMove();
+
+            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            {
+                double[] amps = new double[linearModel.tM.Length];
+                for (int i = 0; i < linearModel.tM.Length; i++)
+                {
+                    amps[i] = linearModel.tM[i].N[j].deriv.force[0];
+                }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Vm.MainWin.forceAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                }));
+            }
+            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            {
+                double[] amps = new double[linearModel.tM.Length];
+                for (int i = 0; i < linearModel.tM.Length; i++)
+                {
+                    amps[i] = linearModel.tM[i].N[j].deriv.accl[0];
+                }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Vm.MainWin.acclAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                }));
+            }
+            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            {
+                double[] amps = new double[linearModel.tM.Length];
+                for (int i = 0; i < linearModel.tM.Length; i++)
+                {
+                    amps[i] = linearModel.tM[i].N[j].deriv.displ[0];
+                }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Vm.MainWin.displAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                }));
+            }
+            UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
+            UpdZedThrd.Start();
             ClearEffect(this);
         }
 

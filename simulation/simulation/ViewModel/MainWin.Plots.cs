@@ -19,6 +19,9 @@ namespace simulation.ViewModel
             graphPane.Title.FontSpec.Size = 15;
             graphPane.IsFontsScaled = false;
             graphPane.Border.IsVisible = false;
+            graphPane.XAxis.MajorGrid.IsZeroLine = false;
+            graphPane.YAxis.MajorGrid.IsZeroLine = false;
+            graphPane.IsBoundedRanges = false;
         }
 
         private GraphPane _graphPane;
@@ -54,6 +57,9 @@ namespace simulation.ViewModel
             graphPane.Title.FontSpec.Size = 15;
             graphPane.IsFontsScaled = false;
             graphPane.Border.IsVisible = false;
+            graphPane.XAxis.MajorGrid.IsZeroLine = false;
+            graphPane.YAxis.MajorGrid.IsZeroLine = false;
+            graphPane.IsBoundedRanges = false;
         }
 
         private GraphPane _graphPane;
@@ -89,6 +95,9 @@ namespace simulation.ViewModel
             graphPane.Title.FontSpec.Size = 15;
             graphPane.IsFontsScaled = false;
             graphPane.Border.IsVisible = false;
+            graphPane.XAxis.MajorGrid.IsZeroLine = false;
+            graphPane.YAxis.MajorGrid.IsZeroLine = false;
+            graphPane.IsBoundedRanges = false;
         }
 
         private GraphPane _graphPane;
@@ -124,6 +133,9 @@ namespace simulation.ViewModel
             graphPane.Title.FontSpec.Size = 15;
             graphPane.IsFontsScaled = false;
             graphPane.Border.IsVisible = false;
+            graphPane.XAxis.MajorGrid.IsZeroLine = false;
+            graphPane.YAxis.MajorGrid.IsZeroLine = false;
+            graphPane.IsBoundedRanges = false;
         }
 
         private GraphPane _graphPane;
@@ -159,6 +171,9 @@ namespace simulation.ViewModel
             graphPane.Title.FontSpec.Size = 15;
             graphPane.IsFontsScaled = false;
             graphPane.Border.IsVisible = false;
+            graphPane.XAxis.MajorGrid.IsZeroLine = false;
+            graphPane.YAxis.MajorGrid.IsZeroLine = false;
+            graphPane.IsBoundedRanges = false;
         }
 
         private GraphPane _graphPane;
