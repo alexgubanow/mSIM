@@ -25,6 +25,10 @@
                 <!--Backstage-->
                 <Fluent:Ribbon.Menu>
                     <Fluent:Backstage>
+                        <Fluent:BackstageTabControl>
+                            <Fluent:BackstageTabItem Header="New" />
+                            <Fluent:BackstageTabItem Header="Print" />
+                        </Fluent:BackstageTabControl>
                     </Fluent:Backstage>
                 </Fluent:Ribbon.Menu>
 
