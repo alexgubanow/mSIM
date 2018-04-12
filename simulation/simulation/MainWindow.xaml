@@ -73,8 +73,7 @@
                         <Fluent:Button Header="Grey" />
                     </Fluent:RibbonGroupBox>
                 </Fluent:RibbonTabItem>
-                <Fluent:RibbonTabItem Header="Material Parameters"
-                                  Group="{Binding Source={x:Reference MaterialsGroup}}">
+                <Fluent:RibbonTabItem Header="Material Parameters" Group="{Binding Source={x:Reference MaterialsGroup}}">
                     <Fluent:RibbonGroupBox Header="Demensions">
                         <local:numPowTen Margin="0,5,0,0" Clabel="L" />
                         <local:numPowTen Margin="0,5,0,0" Clabel="b" />
@@ -133,6 +132,7 @@
                     <TabItem>
                         <DockPanel LastChildFill="True">
                             <StackPanel DockPanel.Dock="Left">
+                                <Label Content="Load 3d"/>
                                 <Button Content="Open" Command="{Binding ThrDmod.FileOpenCommand}" />
                             </StackPanel>
                             <h:HelixViewport3D x:Name="view1" CameraRotationMode="Turntable" ModelUpDirection="0,1,0" 
@@ -143,25 +143,6 @@
                                     <ModelVisual3D Content="{Binding ThrDmod.CurrentModel}"/>
                                 </ModelVisual3D>
                             </h:HelixViewport3D>
-                            <!--<hx:Viewport3DX Margin="5,0,0,0" x:Name="view" Camera="{Binding ThrDmod.Camera}"
-                                            CameraMode="Inspect" CameraRotationMode="Turnball" BackgroundColor="#595959"
-                                            EffectsManager="{Binding ThrDmod.EffectsManager}" MSAA="Two">
-                                <hx:Viewport3DX.InputBindings>
-                                    <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
-                                    <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
-                                    <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
-                                    <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
-                                    <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
-                                    <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
-                                    <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
-                                    <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
-                                    <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                                    <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
-                                </hx:Viewport3DX.InputBindings>
-                                <hx:AmbientLight3D />
-                                <hx:DirectionalLight3D Direction="{Binding ThrDmod.Camera.LookDirection}" />
-                                <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ThrDmod.ModelGeometry, Mode=TwoWay}" />
-                            </hx:Viewport3DX>-->
                         </DockPanel>
                     </TabItem>
                     <TabItem>
