@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using ZedGraph;
@@ -23,13 +24,6 @@ namespace simulation
             var Main = new MainViewModel();
             //Main.ThrDmod.modelView = this.view;
             this.DataContext = Main;
-            // Получим панель для рисования
-            //GraphPane pane = forcePlot.GraphPane;
-            //forcePlot.GraphPane.Title.Text = "Force";
-            //acclPlot.GraphPane.Title.Text = "accl";
-            velosPlot.GraphPane.Title.Text = "velos";
-            displPlot.GraphPane.Title.Text = "displ";
-            coordsPlot.GraphPane.Title.Text = "coords";
         }
         public MainViewModel Vm { get { return (MainViewModel)DataContext; } }
 
@@ -65,6 +59,7 @@ namespace simulation
         {
             Vm.MainWin.MaterialsVis = Visibility.Visible;
         }
+        Thread UpdZedThrd;
         private double f(double x)
         {
             if (x == 0)
@@ -90,8 +85,9 @@ namespace simulation
                 list.Add(x, f(x));
             }
             isad+=10;
+            UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
             Vm.MainWin.forceAx.graphPane.AddCurve("Cosc", list, Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), SymbolType.None);
-            updZed(fPlot.ZedGraphPlot);
+            UpdZedThrd.Start();
         }
     }
 }

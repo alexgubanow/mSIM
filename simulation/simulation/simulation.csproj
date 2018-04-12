@@ -152,7 +152,7 @@
     <Compile Include="ObservableObject.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWin.cs" />
-    <Compile Include="ViewModel\MainWin.forceAx.cs" />
+    <Compile Include="ViewModel\MainWin.Plots.cs" />
     <Compile Include="ViewModel\ThrDmod.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="zgWPF.xaml.cs">

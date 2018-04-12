@@ -154,30 +154,22 @@
                 <TabItem>
                     <DockPanel>
                         <StackPanel>
-                            <TextBox DockPanel.Dock="Top" Text="{Binding MainWin.forceAx.Title, Mode=TwoWay}"/>
                             <Button Name="addFORCE" Click="addFORCE_Click"></Button>
                         </StackPanel>
-                        <local:zgWPF x:Name="fPlot" graphPane="{Binding MainWin.forceAx.graphPane, Mode=TwoWay}" 
-                                     gpTitle="{Binding MainWin.forceAx.Title}" XAxisTitle="juhiouh"/>
+                        <local:zgWPF x:Name="fPlot" graphPane="{Binding MainWin.forceAx.graphPane, Mode=TwoWay}" />
                     </DockPanel>
                 </TabItem>
                 <TabItem>
-                    <local:zgWPF gpTitle="ds"/>
+                    <local:zgWPF x:Name="aPlot" graphPane="{Binding MainWin.acclAx.graphPane, Mode=TwoWay}" />
                 </TabItem>
                 <TabItem>
-                    <WindowsFormsHost>
-                        <zed:ZedGraphControl x:Name="velosPlot"/>
-                    </WindowsFormsHost>
+                    <local:zgWPF x:Name="vPlot" graphPane="{Binding MainWin.velosAx.graphPane, Mode=TwoWay}" />
                 </TabItem>
                 <TabItem>
-                    <WindowsFormsHost>
-                        <zed:ZedGraphControl x:Name="displPlot"/>
-                    </WindowsFormsHost>
+                    <local:zgWPF x:Name="dPlot" graphPane="{Binding MainWin.displAx.graphPane, Mode=TwoWay}" />
                 </TabItem>
                 <TabItem>
-                    <WindowsFormsHost>
-                        <zed:ZedGraphControl x:Name="coordsPlot"/>
-                    </WindowsFormsHost>
+                    <local:zgWPF x:Name="cPlot" graphPane="{Binding MainWin.coordAx.graphPane, Mode=TwoWay}" />
                 </TabItem>
             </TabControl>
         </DockPanel>
