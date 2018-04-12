@@ -14,8 +14,16 @@ namespace simulation.ViewModel
             mModels = new List<models>() { models.linear, models.nonlinear, models.particles };
             Objs = new List<string>() { "blank", "metal", "chorda", "artChorda", "glassPart" };
             forceAx = new forceAx();
+            acclAx = new acclAx();
+            velosAx = new velosAx();
+            displAx = new displAx();
+            coordAx = new coordAx();
         }
         public forceAx forceAx { get; set; }
+        public acclAx acclAx { get; set; }
+        public velosAx velosAx { get; set; }
+        public displAx displAx { get; set; }
+        public coordAx coordAx { get; set; }
 
         private int _SelectedPlot;
         public int SelectedPlot { get => _SelectedPlot; set { _SelectedPlot = value; RaisePropertyChanged("SelectedPlot"); } }

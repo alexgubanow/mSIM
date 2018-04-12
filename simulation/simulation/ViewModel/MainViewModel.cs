@@ -1,9 +1,4 @@
 using GalaSoft.MvvmLight;
-using System.Collections.ObjectModel;
-using HelixToolkit.Wpf.SharpDX;
-using Microsoft.Win32;
-using System.Windows.Input;
-using System.IO;
 
 namespace simulation.ViewModel
 {
@@ -35,7 +30,6 @@ namespace simulation.ViewModel
             ////    // Code runs "for real"
             ////}
             MainWin = new MainWin();
-            ThrDmod = new ThrDmod();
         }
 
         public MainWin MainWin { get; set; }

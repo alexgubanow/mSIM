@@ -1,8 +1,9 @@
-﻿using simulation.ViewModel;
+﻿using calcLib;
+using simulation.ViewModel;
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using ZedGraph;
@@ -15,42 +16,48 @@ namespace simulation
     public partial class MainWindow
     {
         [DllImport("shlwapi.dll")]
-        static extern int ColorHLSToRGB(int H, int L, int S);
+        private static extern int ColorHLSToRGB(int H, int L, int S);
 
         public MainWindow()
         {
             InitializeComponent();
             var Main = new MainViewModel();
-            //Main.ThrDmod.modelView = this.view;
+            Main.ThrDmod = new ThrDmod(new FileDialogService(), view1);
             this.DataContext = Main;
-            // Получим панель для рисования
-            //GraphPane pane = forcePlot.GraphPane;
-            //forcePlot.GraphPane.Title.Text = "Force";
-            //acclPlot.GraphPane.Title.Text = "accl";
-            velosPlot.GraphPane.Title.Text = "velos";
-            displPlot.GraphPane.Title.Text = "displ";
-            coordsPlot.GraphPane.Title.Text = "coords";
         }
+
         public MainViewModel Vm { get { return (MainViewModel)DataContext; } }
 
         private void updZed(ZedGraphControl zedGraph)
         {
-            // Вызываем метод AxisChange (), чтобы обновить данные об осях. 
             zedGraph.AxisChange();
-            // Обновляем график
             zedGraph.Invalidate();
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
 
+        private void ApplyEffect(Window win)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                System.Windows.Media.Effects.BlurEffect objBlur = new System.Windows.Media.Effects.BlurEffect();
+                objBlur.Radius = 4;
+                //mngr.Visibility = Visibility.Collapsed;
+                btn_abrt.Visibility = Visibility.Visible;
+                overlayrect.Visibility = Visibility.Visible;
+                overlayring.Visibility = Visibility.Visible;
+                mainPanel.Effect = objBlur;
+            }));
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ClearEffect(Window win)
         {
-        }
-
-        private void objComboBox_GotFocus(object sender, RoutedEventArgs e)
-        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                mainPanel.Effect = null;
+                //mngr.Visibility = Visibility.Visible;
+                btn_abrt.Visibility = Visibility.Collapsed;
+                overlayrect.Visibility = Visibility.Collapsed;
+                overlayring.Visibility = Visibility.Collapsed;
+            }));
         }
 
         private void Ribbon_SelectedTabChanged(object sender, SelectionChangedEventArgs e)
@@ -65,6 +72,7 @@ namespace simulation
         {
             Vm.MainWin.MaterialsVis = Visibility.Visible;
         }
+
         private double f(double x)
         {
             if (x == 0)
@@ -74,24 +82,104 @@ namespace simulation
 
             return Math.Sin(x) / x;
         }
-        int isad = 0;
+
+        private int isad = 0;
         private Random rnd = new Random();
+        private Thread UpdZedThrd;
+
         private void addFORCE_Click(object sender, RoutedEventArgs e)
         {// Создадим список точек
             PointPairList list = new PointPairList();
 
-            double xmin = -50-isad;
-            double xmax = 50+ isad;
+            double xmin = -50 - isad;
+            double xmax = 50 + isad;
 
             // Заполняем список точек
-            for (double x = xmin; x <= xmax; x += 0.01+(isad/10))
+            for (double x = xmin; x <= xmax; x += 0.01 + (isad / 10))
             {
                 // добавим в список точку
                 list.Add(x, f(x));
             }
-            isad+=10;
+            isad += 10;
             Vm.MainWin.forceAx.graphPane.AddCurve("Cosc", list, Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), SymbolType.None);
-            updZed(fPlot.ZedGraphPlot);
+            UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
+            UpdZedThrd.Start();
+        }
+
+        private Thread srtThread;
+
+        private void startFluentbtn_Click(object sender, RoutedEventArgs e)
+        {
+            Vm.MainWin.SelectedPlot = 0;
+            srtThread = new Thread(calc);
+            srtThread.Start();
+        }
+
+        public LinearModel.Model linearModel { get; private set; }
+
+        private void calc()
+        {
+            ApplyEffect(this);
+            int counts = 9000;
+            double dt = 0.000003;
+            int elements = 5;
+            //int points = elements * 2;
+            int nodes = elements + 1;
+            double Length = 180;
+            double l = Length / elements * Math.Pow(10, -3);
+            double b = 50 * Math.Pow(10, -3);
+            double h = 0.1 * Math.Pow(10, -3);
+            double massa = 0.1;
+            linearModel = new LinearModel.Model(counts, dt, nodes, elements, massa, l, b, h);
+            linearModel.applyLoad(100, (1 * Math.Pow(10, -2)));
+            linearModel.calcMove();
+
+            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            {
+                double[] amps = new double[linearModel.tM.Length];
+                for (int i = 0; i < linearModel.tM.Length; i++)
+                {
+                    amps[i] = linearModel.tM[i].N[j].deriv.force[0];
+                }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Vm.MainWin.forceAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                }));
+            }
+            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            {
+                double[] amps = new double[linearModel.tM.Length];
+                for (int i = 0; i < linearModel.tM.Length; i++)
+                {
+                    amps[i] = linearModel.tM[i].N[j].deriv.accl[0];
+                }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Vm.MainWin.acclAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                }));
+            }
+            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            {
+                double[] amps = new double[linearModel.tM.Length];
+                for (int i = 0; i < linearModel.tM.Length; i++)
+                {
+                    amps[i] = linearModel.tM[i].N[j].deriv.displ[0];
+                }
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Vm.MainWin.displAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                }));
+            }
+            UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
+            UpdZedThrd.Start();
+            ClearEffect(this);
+        }
+
+        private void btn_abrt_Click(object sender, RoutedEventArgs e)
+        {
+            srtThread.Abort();
+            GC.Collect();
+            ClearEffect(this);
         }
     }
 }
