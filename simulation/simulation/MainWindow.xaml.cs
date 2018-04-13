@@ -115,7 +115,7 @@ namespace simulation
             srtThread.Start();
         }
 
-        public LinearModel.Model linearModel { get; private set; }
+        public Linear.Model linearModel { get; private set; }
 
         private void calc()
         {
@@ -130,8 +130,8 @@ namespace simulation
             double b = 50 * Math.Pow(10, -3);
             double h = 0.1 * Math.Pow(10, -3);
             double massa = 0.1;
-            linearModel = new LinearModel.Model(counts, dt, nodes, elements, massa, l, b, h);
-            linearModel.applyLoad(100, (1 * Math.Pow(10, -2)));
+            linearModel = new Linear.Model(counts, dt, nodes, elements, massa, l, b, h);
+            Linear.Model.init.Load(100, (1 * Math.Pow(10, -2)), linearModel.time, ref linearModel.tM);
             linearModel.calcMove();
 
             for (int j = 0; j < linearModel.tM[0].N.Length; j++)
