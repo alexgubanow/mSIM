@@ -132,7 +132,7 @@ namespace simulation
             double massa = 0.1;
             linearModel = new Linear.Model(counts, dt, nodes, elements, massa, l, b, h);
             Linear.Model.init.Load(100, (1 * Math.Pow(10, -2)), linearModel.time, ref linearModel.N);
-            Linear.Model.init.Coords(l,ref linearModel.N);
+            Linear.Model.init.Coords(l, ref linearModel.N, ref linearModel.E);
             linearModel.calcMove();
 
             for (int j = 0; j < linearModel.N[j].Length; j++)
