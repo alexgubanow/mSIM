@@ -18,6 +18,9 @@ namespace simulation
         [DllImport("shlwapi.dll")]
         private static extern int ColorHLSToRGB(int H, int L, int S);
 
+        private Thread UpdZedThrd;
+        public MainViewModel Vm { get { return (MainViewModel)DataContext; } }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,7 +29,6 @@ namespace simulation
             this.DataContext = Main;
         }
 
-        public MainViewModel Vm { get { return (MainViewModel)DataContext; } }
 
         private void updZed(ZedGraphControl zedGraph)
         {
@@ -45,6 +47,7 @@ namespace simulation
                 overlayrect.Visibility = Visibility.Visible;
                 overlayring.Visibility = Visibility.Visible;
                 mainPanel.Effect = objBlur;
+                mainPanel.IsEnabled = false;
             }));
         }
 
@@ -52,6 +55,7 @@ namespace simulation
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                mainPanel.IsEnabled = true;
                 mainPanel.Effect = null;
                 //mngr.Visibility = Visibility.Visible;
                 btn_abrt.Visibility = Visibility.Collapsed;
@@ -72,40 +76,7 @@ namespace simulation
         {
             Vm.MainWin.MaterialsVis = Visibility.Visible;
         }
-
-        private double f(double x)
-        {
-            if (x == 0)
-            {
-                return 1;
-            }
-
-            return Math.Sin(x) / x;
-        }
-
-        private int isad = 0;
-        private Random rnd = new Random();
-        private Thread UpdZedThrd;
-
-        private void addFORCE_Click(object sender, RoutedEventArgs e)
-        {// Создадим список точек
-            PointPairList list = new PointPairList();
-
-            double xmin = -50 - isad;
-            double xmax = 50 + isad;
-
-            // Заполняем список точек
-            for (double x = xmin; x <= xmax; x += 0.01 + (isad / 10))
-            {
-                // добавим в список точку
-                list.Add(x, f(x));
-            }
-            isad += 10;
-            Vm.MainWin.forceAx.graphPane.AddCurve("Cosc", list, Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)), SymbolType.None);
-            UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
-            UpdZedThrd.Start();
-        }
-
+                
         private Thread srtThread;
 
         private void startFluentbtn_Click(object sender, RoutedEventArgs e)
