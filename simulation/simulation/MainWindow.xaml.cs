@@ -131,39 +131,39 @@ namespace simulation
             double h = 0.1 * Math.Pow(10, -3);
             double massa = 0.1;
             linearModel = new Linear.Model(counts, dt, nodes, elements, massa, l, b, h);
-            Linear.Model.init.Load(100, (1 * Math.Pow(10, -2)), linearModel.time, ref linearModel.tM);
+            Linear.Model.init.Load(100, (1 * Math.Pow(10, -2)), linearModel.time, ref linearModel.N);
             linearModel.calcMove();
 
-            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            for (int j = 0; j < linearModel.N[j].Length; j++)
             {
-                double[] amps = new double[linearModel.tM.Length];
-                for (int i = 0; i < linearModel.tM.Length; i++)
+                double[] amps = new double[linearModel.N.Length];
+                for (int i = 0; i < linearModel.N.Length; i++)
                 {
-                    amps[i] = linearModel.tM[i].N[j].deriv.force[0];
+                    amps[i] = linearModel.N[i][j].deriv.force[0];
                 }
                 Dispatcher.Invoke(new Action(() =>
                 {
                     Vm.MainWin.forceAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
                 }));
             }
-            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            for (int j = 0; j < linearModel.N[j].Length; j++)
             {
-                double[] amps = new double[linearModel.tM.Length];
-                for (int i = 0; i < linearModel.tM.Length; i++)
+                double[] amps = new double[linearModel.N.Length];
+                for (int i = 0; i < linearModel.N.Length; i++)
                 {
-                    amps[i] = linearModel.tM[i].N[j].deriv.accl[0];
+                    amps[i] = linearModel.N[i][j].deriv.accl[0];
                 }
                 Dispatcher.Invoke(new Action(() =>
                 {
                     Vm.MainWin.acclAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
                 }));
             }
-            for (int j = 0; j < linearModel.tM[0].N.Length; j++)
+            for (int j = 0; j < linearModel.N[j].Length; j++)
             {
-                double[] amps = new double[linearModel.tM.Length];
-                for (int i = 0; i < linearModel.tM.Length; i++)
+                double[] amps = new double[linearModel.N.Length];
+                for (int i = 0; i < linearModel.N.Length; i++)
                 {
-                    amps[i] = linearModel.tM[i].N[j].deriv.displ[0];
+                    amps[i] = linearModel.N[i][j].deriv.displ[0];
                 }
                 Dispatcher.Invoke(new Action(() =>
                 {
