@@ -125,7 +125,7 @@ namespace simulation
             int elements = 5;
             //int points = elements * 2;
             int nodes = elements + 1;
-            double Length = 50;
+            double Length = 80;
             double l = Length / elements * Math.Pow(10, -3);
             double b = 50 * Math.Pow(10, -3);
             double h = 0.1 * Math.Pow(10, -3);
