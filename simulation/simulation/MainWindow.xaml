@@ -51,15 +51,15 @@
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Itegration">
                         <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}"
-                                     MinWidth="125" />
+                                     MinWidth="125" IsEditable="False"/>
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Model">
                         <Fluent:ComboBox Margin="0,5,0,0" Header="Model" ItemsSource="{Binding MainWin.mModels}"
-                                     MinWidth="125" />
+                                     MinWidth="125" IsEditable="False"/>
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox x:Name="objGroupBox" Header="Object" GotFocus="objGroupBox_GotFocus">
                         <Fluent:ComboBox Margin="0,5,0,0" x:Name="objComboBox" Header="Template"
-                                     ItemsSource="{Binding MainWin.Objs}" MinWidth="125" />
+                                     ItemsSource="{Binding MainWin.Objs}" MinWidth="125" IsEditable="False"/>
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="calc" GotFocus="objGroupBox_GotFocus">
                         <Fluent:Button Header="start" x:Name="startFluentbtn" Click="startFluentbtn_Click"
@@ -74,14 +74,14 @@
                 </Fluent:RibbonTabItem>
                 <Fluent:RibbonTabItem Header="Material Parameters" Group="{Binding Source={x:Reference MaterialsGroup}}">
                     <Fluent:RibbonGroupBox Header="Demensions">
-                        <local:numPowTen Margin="0,5,0,0" Clabel="L" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="b" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="L" num="{Binding ObjParam.L}" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="b" num="{Binding ObjParam.b}" />
                         <Border Width="1" Margin="3" Height="175" Visibility="Visible" Background="#FFB9C9DA" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="h " />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="h " num="{Binding ObjParam.h}" />
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Physics">
-                        <local:numPowTen Margin="0,5,0,0" Clabel="ro" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="E " />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="ro" num="{Binding ObjParam.ro}"/>
+                        <local:numPowTen Margin="0,5,0,0" Clabel="E " num="{Binding ObjParam.E}" />
                     </Fluent:RibbonGroupBox>
                 </Fluent:RibbonTabItem>
             </Fluent:Ribbon>

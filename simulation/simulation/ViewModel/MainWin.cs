@@ -12,7 +12,7 @@ namespace simulation.ViewModel
             MaterialsVis = Visibility.Collapsed;
             IntegrSchems = new List<integr.Schems>() { integr.Schems.euler, integr.Schems.gear, integr.Schems.verlet };
             mModels = new List<models>() { models.linear, models.nonlinear, models.particles };
-            Objs = new List<string>() { "blank", "metal", "chorda", "artChorda", "glassPart" };
+            Objs = new List<string>() {"Add new", "blank", "metal", "chorda", "artChorda", "glassPart" };
             forceAx = new forceAx();
             acclAx = new acclAx();
             velosAx = new velosAx();
