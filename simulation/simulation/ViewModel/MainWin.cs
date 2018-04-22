@@ -12,13 +12,14 @@ namespace simulation.ViewModel
             MaterialsVis = Visibility.Collapsed;
             IntegrSchems = new List<integr.Schems>() { integr.Schems.euler, integr.Schems.gear, integr.Schems.verlet };
             mModels = new List<models>() { models.linear, models.nonlinear, models.particles };
-            Objs = new List<string>() {"Add new", "blank", "metal", "chorda", "artChorda", "glassPart" };
+            maters = new List<Material>() { new Material() { Name = "blank" }, new Material() { Name = "metal" }, new Material() { Name = "chorda" }, new Material() { Name = "artChorda" }, new Material() { Name = "glassPart" } };
             forceAx = new forceAx();
             acclAx = new acclAx();
             velosAx = new velosAx();
             displAx = new displAx();
             coordAx = new coordAx();
         }
+
         public forceAx forceAx { get; set; }
         public acclAx acclAx { get; set; }
         public velosAx velosAx { get; set; }
@@ -27,7 +28,10 @@ namespace simulation.ViewModel
 
         private int _SelectedPlot;
         public int SelectedPlot { get => _SelectedPlot; set { _SelectedPlot = value; RaisePropertyChanged("SelectedPlot"); } }
-        
+
+        private Material _SelectedMater;
+        public Material SelectedMater { get => _SelectedMater; set { _SelectedMater = value; RaisePropertyChanged("SelectedMater"); } }
+
         private int _selectedRibbonTab;
         public int SelectedRibbonTab { get => _selectedRibbonTab; set { _selectedRibbonTab = value; RaisePropertyChanged("selectedRibbonTab"); } }
 
@@ -39,9 +43,9 @@ namespace simulation.ViewModel
 
         public List<models> mModels { get => _mModels; set { _mModels = value; RaisePropertyChanged("mModels"); } }
 
-        private List<string> _Objs;
+        private List<Material> _maters;
 
-        public List<string> Objs { get => _Objs; set { _Objs = value; RaisePropertyChanged("Objs"); } }
+        public List<Material> maters { get => _maters; set { _maters = value; RaisePropertyChanged("maters"); } }
 
         private Visibility _MaterialsVis;
 

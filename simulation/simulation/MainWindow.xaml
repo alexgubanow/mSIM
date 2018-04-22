@@ -51,17 +51,19 @@
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Itegration">
                         <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}"
-                                     MinWidth="125" IsEditable="False"/>
+                                     MinWidth="125" IsEditable="False" />
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Model">
                         <Fluent:ComboBox Margin="0,5,0,0" Header="Model" ItemsSource="{Binding MainWin.mModels}"
-                                     MinWidth="125" IsEditable="False"/>
+                                     MinWidth="125" IsEditable="False" />
                     </Fluent:RibbonGroupBox>
-                    <Fluent:RibbonGroupBox x:Name="objGroupBox" Header="Object" GotFocus="objGroupBox_GotFocus">
-                        <Fluent:ComboBox Margin="0,5,0,0" x:Name="objComboBox" Header="Template"
-                                     ItemsSource="{Binding MainWin.Objs}" MinWidth="125" IsEditable="False"/>
+                    <Fluent:RibbonGroupBox x:Name="materGroupBox" Header="Material" GotFocus="materGroupBox_GotFocus">
+                        <Fluent:ComboBox Margin="0,5,0,0" x:Name="materComboBox" Header="Template"
+                                     ItemsSource="{Binding MainWin.maters}" MinWidth="125" IsEditable="False"
+                                         DisplayMemberPath="Name" SelectedItem="{Binding MainWin.SelectedMater}" />
+                        <Fluent:Button Header="Add new material" Size="Middle" />
                     </Fluent:RibbonGroupBox>
-                    <Fluent:RibbonGroupBox Header="calc" GotFocus="objGroupBox_GotFocus">
+                    <Fluent:RibbonGroupBox Header="calc">
                         <Fluent:Button Header="start" x:Name="startFluentbtn" Click="startFluentbtn_Click"
                                    Icon="{iconPacks:Material Kind=Restart}"
                                    LargeIcon="{iconPacks:Material Kind=Restart, Height=28, Width=28}" />
@@ -73,6 +75,16 @@
                     </Fluent:RibbonGroupBox>
                 </Fluent:RibbonTabItem>
                 <Fluent:RibbonTabItem Header="Material Parameters" Group="{Binding Source={x:Reference MaterialsGroup}}">
+                    <Fluent:RibbonGroupBox Header="Main">
+                        <Fluent:Button Header="Load"
+                                   Icon="{iconPacks:Material Kind=FolderOpen}"
+                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
+                        <Fluent:Button Header="Save"
+                                   Icon="{iconPacks:Material Kind=ContentSave}"
+                                   LargeIcon="{iconPacks:Material Kind=ContentSave, Height=28, Width=28}" />
+                        <Fluent:TextBox Header="Name" Text="{Binding MainWin.SelectedMater.Name}" MinWidth="120" />
+                        <Fluent:TextBox Header="Name" Text="{Binding MainWin.SelectedMater.Name}" MinWidth="120" />
+                    </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Demensions">
                         <local:numPowTen Margin="0,5,0,0" Clabel="L" num="{Binding ObjParam.L}" />
                         <local:numPowTen Margin="0,5,0,0" Clabel="b" num="{Binding ObjParam.b}" />
@@ -80,7 +92,7 @@
                         <local:numPowTen Margin="0,5,0,0" Clabel="h " num="{Binding ObjParam.h}" />
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Physics">
-                        <local:numPowTen Margin="0,5,0,0" Clabel="ro" num="{Binding ObjParam.ro}"/>
+                        <local:numPowTen Margin="0,5,0,0" Clabel="ro" num="{Binding ObjParam.ro}" />
                         <local:numPowTen Margin="0,5,0,0" Clabel="E " num="{Binding ObjParam.E}" />
                     </Fluent:RibbonGroupBox>
                 </Fluent:RibbonTabItem>
@@ -105,7 +117,7 @@
                           Value="Your value which is also used as content if no content is set." />
             </Fluent:StatusBar>
             <DockPanel LastChildFill="true">
-                <Expander ExpandDirection="Left" DockPanel.Dock="Right" >
+                <Expander ExpandDirection="Left" DockPanel.Dock="Right">
                     <StackPanel>
                         <ListBox x:Name="plotSelector" SelectedIndex="{Binding MainWin.SelectedPlot}">
                             <ListBoxItem Content="Object" />
@@ -127,15 +139,15 @@
                     <TabItem>
                         <DockPanel LastChildFill="True">
                             <StackPanel DockPanel.Dock="Left">
-                                <Label Content="Load 3d"/>
+                                <Label Content="Load 3d" />
                                 <Button Content="Open" Command="{Binding ThrDmod.FileOpenCommand}" />
                             </StackPanel>
-                            <h:HelixViewport3D x:Name="view1" CameraRotationMode="Turntable" ModelUpDirection="0,1,0" 
+                            <h:HelixViewport3D x:Name="view1" CameraRotationMode="Turntable" ModelUpDirection="0,1,0"
                                                ShowFrameRate="True" Background="LightGray"
                                                ShowCoordinateSystem="True" ShowViewCube="False" ShowCameraTarget="False">
                                 <ModelVisual3D x:Name="root1">
-                                    <h:DefaultLights/>
-                                    <ModelVisual3D Content="{Binding ThrDmod.CurrentModel}"/>
+                                    <h:DefaultLights />
+                                    <ModelVisual3D Content="{Binding ThrDmod.CurrentModel}" />
                                 </ModelVisual3D>
                             </h:HelixViewport3D>
                         </DockPanel>
@@ -148,9 +160,9 @@
                                         <Button></Button>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
-                                <ListBoxItem Content="X"/>
-                                <ListBoxItem Content="Y"/>
-                                <ListBoxItem Content="Z"/>
+                                <ListBoxItem Content="X" />
+                                <ListBoxItem Content="Y" />
+                                <ListBoxItem Content="Z" />
                             </ListBox>
                             <local:zgWPF x:Name="fPlot" graphPane="{Binding MainWin.forceAx.graphPane, Mode=TwoWay}" />
                         </DockPanel>

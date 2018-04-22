@@ -3,9 +3,9 @@
 namespace simulation.ViewModel
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class ObjParam : Observable
+    public class Material : Observable
     {
-        public ObjParam()
+        public Material()
         {
             Name = "";
             L = 0;

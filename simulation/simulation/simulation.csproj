@@ -146,6 +146,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="ViewModel\load.cs" />
     <Compile Include="numPowTen.xaml.cs">
       <DependentUpon>numPowTen.xaml</DependentUpon>
     </Compile>
@@ -156,7 +157,7 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWin.cs" />
     <Compile Include="ViewModel\MainWin.Plots.cs" />
-    <Compile Include="ViewModel\ObjParam.cs" />
+    <Compile Include="ViewModel\Material.cs" />
     <Compile Include="ViewModel\ThrDmod.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="ViewModel\VisualViewModel.cs" />

@@ -48,11 +48,11 @@ namespace debugApp
                     double[] loc = new double[6];
                     double L = preob.getL(initState[0], initState[3], initState[1], initState[4]);
                     Console.WriteLine("L= {0:F5}", L);
-                    double sina = preob.getSina(L, initState[1], initState[4]);
-                    Console.WriteLine("sina= {0:F5}", sina);
-                    double cosa = preob.getCosa(L, initState[0], initState[3]);
-                    Console.WriteLine("cosa= {0:F5}", cosa);
-                    preob.to_loc(offset, glob, sina, cosa, L, ref loc);
+                    //double sina = preob.getSina(L, initState[1], initState[4]);
+                    //Console.WriteLine("sina= {0:F5}", sina);
+                   // double cosa = preob.getCosa(L, initState[0], initState[3]);
+                    //Console.WriteLine("cosa= {0:F5}", cosa);
+                    //preob.to_loc(offset, glob, sina, cosa, L, ref loc);
                     Console.WriteLine("local coords:");
                     Console.WriteLine("x1= {0:F5}", loc[0]);
                     Console.WriteLine("y1= {0:F5}", loc[1]);

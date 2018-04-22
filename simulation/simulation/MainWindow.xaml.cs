@@ -72,7 +72,7 @@ namespace simulation
             }
         }
 
-        private void objGroupBox_GotFocus(object sender, RoutedEventArgs e)
+        private void materGroupBox_GotFocus(object sender, RoutedEventArgs e)
         {
             Vm.MainWin.MaterialsVis = Visibility.Visible;
         }
