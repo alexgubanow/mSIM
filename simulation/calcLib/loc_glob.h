@@ -11,9 +11,31 @@ namespace calcLib
 	public ref class preob
 	{
 	public:
+		ref class _cos
+		{
+			static double _L;
+			static double _xX;
+			static double _xY;
+			static double _xZ;
+			static double _yX;
+			static double _yY;
+			static double _yZ;
+			static double _zX;
+			static double _zY;
+			static double _zZ;
+
+			static inline double Xx(double L, double X1, double X2) { return (X2 - X1) / L; };
+		public:
+			_cos() {};
+			~_cos() {};
+		};
 		static inline double getL(double x1, double x2, double y1, double y2) { return Math::Sqrt(Math::Pow(x2 - x1, 2) + Math::Pow(y2 - y1, 2)); }
+		static inline double getCosXx(double L, double x1, double x2) { return (x2 - x1) / L; };
+		static inline double getCosYx(double L, double x1, double x2) { return (x2 - x1) / L; };
+		static inline double getCosZx(double L, double x1, double x2) { return (x2 - x1) / L; };
+		static inline double getCosXy(double L, double x1, double x2) { return (x2 - x1) / L; };
+		static inline double getCos(double L, double x1, double x2) { return (x2 - x1) / L; };
 		static inline double getCosa(double L, double x1, double x2) { return (x2 - x1) / L; };
-		static inline double getSina(double L, double y1, double y2) { return (y2 - y1) / L; };
 		static void to_glob(array<double>^ offset, array<double>^ loc, double sina, double cosa, double L, array<double>^ %glob)
 		{
 			glob[x] = offset[x] + cosa * loc[x] - sina * loc[y] + 0 * loc[z];

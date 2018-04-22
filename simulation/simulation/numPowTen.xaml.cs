@@ -33,8 +33,8 @@ namespace simulation
 
         public static readonly DependencyProperty PowTenProperty = DependencyProperty.Register("PowTen", typeof(int), typeof(numPowTen), new UIPropertyMetadata(0));
 
-        public int num { get { return (int)GetValue(numProperty); } set { SetValue(numProperty, value); } }
+        public double num { get { return (double)GetValue(numProperty); } set { SetValue(numProperty, value); } }
 
-        public static readonly DependencyProperty numProperty = DependencyProperty.Register("num", typeof(int), typeof(numPowTen), new UIPropertyMetadata(0));
+        public static readonly DependencyProperty numProperty = DependencyProperty.Register("num", typeof(double), typeof(numPowTen), new UIPropertyMetadata(0));
     }
 }
