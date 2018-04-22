@@ -25,7 +25,7 @@
                        SelectedTabIndex="{Binding MainWin.SelectedRibbonTab, Mode=TwoWay}">
                 <!--Backstage-->
                 <Fluent:Ribbon.Menu>
-                    <Fluent:Backstage>
+                    <Fluent:Backstage Header="Main">
                         <Fluent:BackstageTabControl>
                             <Fluent:BackstageTabItem Header="New" />
                             <Fluent:BackstageTabItem Header="Print" />
