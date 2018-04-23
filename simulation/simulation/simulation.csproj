@@ -146,6 +146,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="JSON.cs" />
     <Compile Include="ViewModel\load.cs" />
     <Compile Include="numPowTen.xaml.cs">
       <DependentUpon>numPowTen.xaml</DependentUpon>
@@ -157,7 +158,7 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWin.cs" />
     <Compile Include="ViewModel\MainWin.Plots.cs" />
-    <Compile Include="ViewModel\Material.cs" />
+    <Compile Include="Material.cs" />
     <Compile Include="ViewModel\ThrDmod.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="ViewModel\VisualViewModel.cs" />
@@ -203,6 +204,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="materials.mater">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
