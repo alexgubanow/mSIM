@@ -8,45 +8,34 @@ namespace calcLib
 		y = 1,
 		z = 2,
 	};
+	ref class matrixPreob
+	{
+		inline double _cos(double p1, double p2) { return (p2 - p1) / _L; };
+	public:
+		double _L;
+		double Xx; double Xy; double Xz;
+		double Yx; double Yy; double Yz;
+		double Zx; double Zy; double Zz;
+
+		matrixPreob() {};
+		matrixPreob(array<double>^ p1, array<double>^ p2, double L);
+		~matrixPreob() {};
+	};
 	public ref class preob
 	{
 	public:
-		ref class _cos
-		{
-			static double _L;
-			static double _xX;
-			static double _xY;
-			static double _xZ;
-			static double _yX;
-			static double _yY;
-			static double _yZ;
-			static double _zX;
-			static double _zY;
-			static double _zZ;
-
-			static inline double Xx(double L, double X1, double X2) { return (X2 - X1) / L; };
-		public:
-			_cos() {};
-			~_cos() {};
-		};
 		static inline double getL(double x1, double x2, double y1, double y2) { return Math::Sqrt(Math::Pow(x2 - x1, 2) + Math::Pow(y2 - y1, 2)); }
-		static inline double getCosXx(double L, double x1, double x2) { return (x2 - x1) / L; };
-		static inline double getCosYx(double L, double x1, double x2) { return (x2 - x1) / L; };
-		static inline double getCosZx(double L, double x1, double x2) { return (x2 - x1) / L; };
-		static inline double getCosXy(double L, double x1, double x2) { return (x2 - x1) / L; };
-		static inline double getCos(double L, double x1, double x2) { return (x2 - x1) / L; };
-		static inline double getCosa(double L, double x1, double x2) { return (x2 - x1) / L; };
-		static void to_glob(array<double>^ offset, array<double>^ loc, double sina, double cosa, double L, array<double>^ %glob)
+		static void to_glob(array<double>^ offset, array<double>^ loc, matrixPreob^ cos, array<double>^ %glob)
 		{
-			glob[x] = offset[x] + cosa * loc[x] - sina * loc[y] + 0 * loc[z];
-			glob[y] = offset[y] + cosa * loc[y] + sina * loc[x] + 0 * loc[z];
-			glob[z] = offset[z] + 0 * loc[y] + 0 * loc[y] + 1 * loc[z];
+			glob[x] = offset[x] + cos->Xx * loc[x] + cos->Yx * loc[y] + cos->Zx * loc[z];
+			glob[y] = offset[y] + cos->Xy * loc[y] + cos->Yy * loc[x] + cos->Zy * loc[z];
+			glob[z] = offset[z] + cos->Xz * loc[y] + cos->Yz * loc[y] + cos->Zz * loc[z];
 		}
-		static void to_loc(array<double>^ offset, array<double>^ glob, double sina, double cosa, double L, array<double>^ %loc)
+		static void to_loc(array<double>^ offset, array<double>^ glob, matrixPreob^ cos, array<double>^ %loc)
 		{
-			loc[x] = cosa * (glob[x] - offset[x]) + sina * (glob[y] - offset[y]) + 0 * (glob[z] - offset[z]);
-			loc[y] = cosa * (glob[y] - offset[y]) - sina * (glob[x] - offset[x]) + 0 * (glob[z] - offset[z]);
-			loc[z] = 0 * (glob[x] - offset[x]) + 0 * (glob[y] - offset[y]) + 1 * (glob[z] - offset[z]);
+			loc[x] = cos->Xx * (glob[x] - offset[x]) + cos->Xy * (glob[y] - offset[y]) + cos->Xz * (glob[z] - offset[z]);
+			loc[y] = cos->Yx * (glob[y] - offset[y]) + cos->Yy * (glob[x] - offset[x]) + cos->Yz * (glob[z] - offset[z]);
+			loc[z] = cos->Zx * (glob[x] - offset[x]) + cos->Zy * (glob[y] - offset[y]) + cos->Zz * (glob[z] - offset[z]);
 		}
 	};
 }
