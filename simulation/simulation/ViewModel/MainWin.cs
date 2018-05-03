@@ -1,5 +1,6 @@
 ﻿using calcLib;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
@@ -12,7 +13,6 @@ namespace simulation.ViewModel
             MaterialsVis = Visibility.Collapsed;
             IntegrSchems = new List<integr.Schems>() { integr.Schems.euler, integr.Schems.gear, integr.Schems.verlet };
             mModels = new List<models>() { models.linear, models.nonlinear, models.particles };
-            maters = new List<Material>() { new Material() { Name = "blank" }, new Material() { Name = "metal" }, new Material() { Name = "chorda" }, new Material() { Name = "artChorda" }, new Material() { Name = "glassPart" } };
             forceAx = new forceAx();
             acclAx = new acclAx();
             velosAx = new velosAx();
@@ -43,25 +43,13 @@ namespace simulation.ViewModel
 
         public List<models> mModels { get => _mModels; set { _mModels = value; RaisePropertyChanged("mModels"); } }
 
-        private List<Material> _maters;
+        private ObservableCollection<Material> _maters;
 
-        public List<Material> maters { get => _maters; set { _maters = value; RaisePropertyChanged("maters"); } }
+        public ObservableCollection<Material> maters { get => _maters; set { _maters = value; RaisePropertyChanged("maters"); }  }
 
         private Visibility _MaterialsVis;
 
-        public Visibility MaterialsVis
-        {
-            get
-            {
-                return _MaterialsVis;
-            }
-
-            set
-            {
-                _MaterialsVis = value;
-                RaisePropertyChanged("MaterialsVis");
-            }
-        }
+        public Visibility MaterialsVis { get { return _MaterialsVis; } set { _MaterialsVis = value; RaisePropertyChanged("MaterialsVis"); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -71,5 +59,4 @@ namespace simulation.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }

@@ -61,7 +61,12 @@
                         <Fluent:ComboBox Margin="0,5,0,0" x:Name="materComboBox" Header="Template"
                                      ItemsSource="{Binding MainWin.maters}" MinWidth="125" IsEditable="False"
                                          DisplayMemberPath="Name" SelectedItem="{Binding MainWin.SelectedMater}" />
-                        <Fluent:Button Header="Add new material" Size="Middle" />
+                        <Fluent:Button Header="Add new material" Size="Middle" x:Name="addMaterBtn"
+                                   Icon="{iconPacks:Material Kind=NewBox}"
+                                       Click="addMaterBtn_Click"/>
+                        <Fluent:Button Header="Export materials" Size="Middle" x:Name="exportMaterBtn"
+                                   Icon="{iconPacks:Material Kind=Export}"
+                                       Click="exportMaterBtn_Click"/>
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="calc">
                         <Fluent:Button Header="start" x:Name="startFluentbtn" Click="startFluentbtn_Click"
@@ -76,24 +81,20 @@
                 </Fluent:RibbonTabItem>
                 <Fluent:RibbonTabItem Header="Material Parameters" Group="{Binding Source={x:Reference MaterialsGroup}}">
                     <Fluent:RibbonGroupBox Header="Main">
-                        <Fluent:Button Header="Load"
+                        <Fluent:Button Header="Load" x:Name="loadMaterBtn" Click="loadMaterBtn_Click"
                                    Icon="{iconPacks:Material Kind=FolderOpen}"
                                    LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
-                        <Fluent:Button Header="Save"
-                                   Icon="{iconPacks:Material Kind=ContentSave}"
-                                   LargeIcon="{iconPacks:Material Kind=ContentSave, Height=28, Width=28}" />
-                        <Fluent:TextBox Header="Name" Text="{Binding MainWin.SelectedMater.Name}" MinWidth="120" />
-                        <Fluent:TextBox Header="Name" Text="{Binding MainWin.SelectedMater.Name}" MinWidth="120" />
+                        <Fluent:TextBox Header="Name" Text="{Binding MainWin.SelectedMater.Name, Mode=TwoWay}" MinWidth="120" />
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Demensions">
-                        <local:numPowTen Margin="0,5,0,0" Clabel="L" num="{Binding ObjParam.L}" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="b" num="{Binding ObjParam.b}" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="L" num="{Binding MainWin.SelectedMater.L, Mode=TwoWay}" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="b" num="{Binding MainWin.SelectedMater.b, Mode=TwoWay}" />
                         <Border Width="1" Margin="3" Height="175" Visibility="Visible" Background="#FFB9C9DA" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="h " num="{Binding ObjParam.h}" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="h " num="{Binding MainWin.SelectedMater.h, Mode=TwoWay}" />
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Physics">
-                        <local:numPowTen Margin="0,5,0,0" Clabel="ro" num="{Binding ObjParam.ro}" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="E " num="{Binding ObjParam.E}" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="ro" num="{Binding MainWin.SelectedMater.ro, Mode=TwoWay}" />
+                        <local:numPowTen Margin="0,5,0,0" Clabel="E " num="{Binding MainWin.SelectedMater.E, Mode=TwoWay}" />
                     </Fluent:RibbonGroupBox>
                 </Fluent:RibbonTabItem>
             </Fluent:Ribbon>

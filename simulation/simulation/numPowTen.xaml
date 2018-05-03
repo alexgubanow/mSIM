@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:simulation"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" DataContext="{Binding ElementName=parent}" >
-    <StackPanel Orientation="Horizontal">
+             d:DesignHeight="450" d:DesignWidth="800" >
+    <StackPanel Orientation="Horizontal"  DataContext="{Binding ElementName=parent}">
         <Label Content="{Binding Path=Clabel}"/>
         <TextBox Text="{Binding Path=num}" MinWidth="30"/>
         <Label Content="*10^"/>

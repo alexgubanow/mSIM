@@ -26,7 +26,11 @@ namespace simulation
 
         public static readonly DependencyProperty numProperty = DependencyProperty.Register("num", typeof(double), typeof(numPowTen), new UIPropertyMetadata(0.0));
 
-        public double finalValue { get { return Math.Pow(num, PowTen); } set { } }
+        public double finalValue { get { return Math.Pow(num, PowTen); }
+            set {
+                string[] numBer = String.Format("{0:F20}", value).Split('E');
+                num = Convert.ToDouble(numBer[0]);
+                PowTen = Convert.ToInt32(numBer[1]); } }
 
         public static readonly DependencyProperty finalValueProperty = DependencyProperty.Register("finalValue", typeof(double), typeof(numPowTen), new UIPropertyMetadata(0.0));
     }
