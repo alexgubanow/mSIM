@@ -107,11 +107,16 @@ namespace simulation
             //int points = elements * 2;
             int nodes = elements + 1;
             //double Length = 80;
-            double l = Vm.MainWin.SelectedMater.L / elements * Math.Pow(10, -3);
+            Material currMater = new Material();
+            Dispatcher.Invoke(new Action(() =>
+            {
+                currMater = Vm.MainWin.SelectedMater;
+            }));
+            double l = currMater.L / elements * Math.Pow(10, -3);
             //double b = 50 * Math.Pow(10, -3);
             //double h = 0.1 * Math.Pow(10, -3);
             //double massa = 0.1;
-            linearModel = new Linear.Model(counts, dt, nodes, elements, Vm.MainWin.SelectedMater.ro, Vm.MainWin.SelectedMater.E, l, Vm.MainWin.SelectedMater.b, Vm.MainWin.SelectedMater.h);
+            linearModel = new Linear.Model(counts, dt, nodes, elements, currMater.ro, currMater.E, l, currMater.b, currMater.h);
             Linear.Model.init.Load(100, (1 * Math.Pow(10, -2)), linearModel.time, ref linearModel.N);
             Linear.Model.init.Coords(l, ref linearModel.N, ref linearModel.E);
             linearModel.calcMove();
