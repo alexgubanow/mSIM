@@ -97,6 +97,7 @@ namespace simulation
         }
 
         public Linear.Model linearModel { get; private set; }
+        public Load load { get; private set; }
 
         private void calc()
         {
