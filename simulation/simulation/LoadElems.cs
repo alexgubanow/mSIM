@@ -12,6 +12,7 @@ namespace simulation
         public LoadedElems()
         {
             Name = "";
+            elems = new LoadedElem[1] { new LoadedElem() { Id = 0, dT = 1E-6, lDirect = loadDirect.x, lArr = new double[1], lType = loadType.displ } };
         }
 
         [JsonProperty]
@@ -20,19 +21,23 @@ namespace simulation
         [JsonProperty]
         public LoadedElem[] elems { get { return _elems; } set { _elems = value; RaisePropertyChanged("elems"); } }
     }
+
     [JsonObject(MemberSerialization.OptIn)]
     public class LoadedElem : Observable
     {
         public LoadedElem()
         {
-            Id = 0;
-            Load = new double[][] { };
         }
 
         private int _Id;
 
         [JsonProperty]
         public int Id { get { return _Id; } set { _Id = value; RaisePropertyChanged("Id"); } }
+
+        private double _dT;
+
+        [JsonProperty]
+        public double dT { get { return _dT; } set { _dT = value; RaisePropertyChanged("dT"); } }
 
         private loadType _lType;
 
@@ -44,11 +49,9 @@ namespace simulation
         [JsonProperty]
         public loadDirect lDirect { get { return _lDirect; } set { _lDirect = value; RaisePropertyChanged("lDirect"); } }
 
-        private double[][] _Load;
+        private double[] _lArr;
 
         [JsonProperty]
-        public double[][] Load { get { return _Load; } set { _Load = value; RaisePropertyChanged("Load"); } }
+        public double[] lArr { get { return _lArr; } set { _lArr = value; RaisePropertyChanged("lArr"); } }
     }
-
-
 }

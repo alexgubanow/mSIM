@@ -8,6 +8,8 @@ namespace simulation
         public Load()
         {
             Name = "";
+            lps = new LoadedPoints[1] { new LoadedPoints() };
+            les = new LoadedElems[1] { new LoadedElems()};
         }
 
         private string _Name;
@@ -26,13 +28,7 @@ namespace simulation
         public LoadedElems[] les { get { return _les; } set { _les = value; RaisePropertyChanged("les"); } }
     }
 
-    public enum loadType
-    {
-        force, displ
-    }
+    public enum loadType { force, displ }
 
-    public enum loadDirect
-    {
-        vert, x, y, z
-    }
+    public enum loadDirect { vert, x, y, z }
 }
