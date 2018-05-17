@@ -1,21 +1,14 @@
 #pragma once
 namespace calcLib
 {
-	public enum class models
-	{
-		linear = 0,
-		nonlinear = 1,
-		particles = 2
-	};
-	enum class ForcePlace
-	{
-		N = 0,
-		Qy = 1,
-		Qz = 2,
-		Mx = 3,
-		My = 4,
-		Mz = 5
-	};
+	public enum class loadType { force, displ };
+
+	public enum class loadDirect { vert, x, y, z };
+
+	public enum class models { linear, nonlinear, particles };
+
+	enum class ForcePlace { N, Qy, Qz, Mx, My, Mz };
+
 	public ref class Derivatives
 	{
 	public:

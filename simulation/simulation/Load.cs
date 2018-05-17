@@ -28,7 +28,4 @@ namespace simulation
         public LoadedElems[] les { get { return _les; } set { _les = value; RaisePropertyChanged("les"); } }
     }
 
-    public enum loadType { force, displ }
-
-    public enum loadDirect { vert, x, y, z }
 }

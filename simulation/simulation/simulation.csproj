@@ -150,10 +150,8 @@
     <Compile Include="Load.cs" />
     <Compile Include="LoadElems.cs" />
     <Compile Include="LoadPoints.cs" />
+    <Compile Include="proj.cs" />
     <Compile Include="ViewModel\load.cs" />
-    <Compile Include="numPowTen.xaml.cs">
-      <DependentUpon>numPowTen.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Observable.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="ViewModel\FileDialogService.cs" />
@@ -180,10 +178,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="numPowTen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="zgWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

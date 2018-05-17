@@ -44,24 +44,29 @@
                 <!--Tabs-->
                 <!--Contextual Tabs-->
                 <Fluent:RibbonTabItem Header="Simulation">
+                    <Fluent:RibbonGroupBox Header="Model">
+                        <Fluent:ComboBox Margin="0,2,0,0" Header="Model" ItemsSource="{Binding MainWin.mModels}"
+                                     MinWidth="125" IsEditable="False" SelectedValue="{Binding MainWin.currProj.Model}"/>
+                        <Fluent:TextBox Margin="0,2,0,0" Header="Elements" Text="{Binding MainWin.currProj.elems}"/>
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox Header="Itegration">
+                        <Fluent:ComboBox Margin="0,2,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}"
+                                     MinWidth="125" IsEditable="False"
+                                         SelectedValue="{Binding MainWin.currProj.IntegrSchem}"/>
+                        <Fluent:TextBox Margin="0,2,0,0" Header="deltaT" Text="{Binding MainWin.currProj.dT}"/>
+                        <Fluent:TextBox Margin="0,2,0,0" Header="Counts" Text="{Binding MainWin.currProj.counts}"/>
+                    </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Load">
                         <Fluent:Button x:Name="openFluentBtn" Margin="0,5,0,0" Header="From file"
                                    Icon="{iconPacks:Material Kind=FolderOpen}"
                                    LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" 
                                        Click="openFluentBtn_Click"/>
-                    </Fluent:RibbonGroupBox>
-                    <Fluent:RibbonGroupBox Header="Itegration">
-                        <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}"
-                                     MinWidth="125" IsEditable="False" />
-                    </Fluent:RibbonGroupBox>
-                    <Fluent:RibbonGroupBox Header="Model">
-                        <Fluent:ComboBox Margin="0,5,0,0" Header="Model" ItemsSource="{Binding MainWin.mModels}"
-                                     MinWidth="125" IsEditable="False" />
+                        <Fluent:CheckBox Margin="0,2,0,0" Header="Interpolate"/>
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox x:Name="materGroupBox" Header="Material" GotFocus="materGroupBox_GotFocus">
-                        <Fluent:ComboBox Margin="0,5,0,0" x:Name="materComboBox" Header="Template"
+                        <Fluent:ComboBox Margin="0,2,0,0" x:Name="materComboBox" Header="Template"
                                      ItemsSource="{Binding MainWin.maters}" MinWidth="125" IsEditable="False"
-                                         DisplayMemberPath="Name" SelectedItem="{Binding MainWin.SelectedMater}" />
+                                         DisplayMemberPath="Name" SelectedItem="{Binding MainWin.currProj.Mater}" />
                         <Fluent:Button Header="Add new material" Size="Middle" x:Name="addMaterBtn"
                                    Icon="{iconPacks:Material Kind=NewBox}"
                                        Click="addMaterBtn_Click"/>
@@ -77,7 +82,7 @@
                 </Fluent:RibbonTabItem>
                 <Fluent:RibbonTabItem Header="Load">
                     <Fluent:RibbonGroupBox Header="Initial state">
-                        <local:numPowTen Margin="0,5,0,0" Clabel="V0" />
+                        <Fluent:TextBox Margin="0,2,0,0" Header="V0"/>
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox>
                         <Fluent:Button Header="Export Load" x:Name="exportLoadBtn"
@@ -90,17 +95,17 @@
                         <Fluent:Button Header="Load" x:Name="loadMaterBtn" Click="loadMaterBtn_Click"
                                    Icon="{iconPacks:Material Kind=FolderOpen}"
                                    LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
-                        <Fluent:TextBox Header="Name" Text="{Binding MainWin.SelectedMater.Name, Mode=TwoWay}" MinWidth="120" />
+                        <Fluent:TextBox Header="Name" Text="{Binding MainWin.currProj.Mater.Name, Mode=TwoWay}" MinWidth="120" />
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Demensions">
-                        <local:numPowTen Margin="0,5,0,0" Clabel="L" num="{Binding MainWin.SelectedMater.L, Mode=TwoWay}" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="b" num="{Binding MainWin.SelectedMater.b, Mode=TwoWay}" />
-                        <Border Width="1" Margin="3" Height="175" Visibility="Visible" Background="#FFB9C9DA" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="h " num="{Binding MainWin.SelectedMater.h, Mode=TwoWay}" />
+                        <Fluent:TextBox Margin="0,2,0,0" Header="L" Text="{Binding MainWin.currProj.Mater.L, Mode=TwoWay}"/>
+                        <Fluent:TextBox Margin="0,2,0,0" Header="b" Text="{Binding MainWin.currProj.Mater.b, Mode=TwoWay}"/>
+                        <Fluent:TextBox Margin="0,2,0,0" Header="h" Text="{Binding MainWin.currProj.Mater.h, Mode=TwoWay}"/>
+                        <!--<Border Width="1" Margin="3" Height="175" Visibility="Visible" Background="#FFB9C9DA" />-->
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Physics">
-                        <local:numPowTen Margin="0,5,0,0" Clabel="ro" num="{Binding MainWin.SelectedMater.ro, Mode=TwoWay}" />
-                        <local:numPowTen Margin="0,5,0,0" Clabel="E " num="{Binding MainWin.SelectedMater.E, Mode=TwoWay}" />
+                        <Fluent:TextBox Margin="0,2,0,0" Header="ro" Text="{Binding MainWin.currProj.Mater.ro, Mode=TwoWay}"/>
+                        <Fluent:TextBox Margin="0,2,0,0" Header="E" Text="{Binding MainWin.currProj.Mater.E, Mode=TwoWay}"/>
                     </Fluent:RibbonGroupBox>
                 </Fluent:RibbonTabItem>
             </Fluent:Ribbon>

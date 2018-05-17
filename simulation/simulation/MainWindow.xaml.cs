@@ -36,7 +36,7 @@ namespace simulation
             Vm.MainWin.maters = JsonConvert.DeserializeObject<ObservableCollection<Material>>(jsonFromFile);
             if(Vm.MainWin.maters.Count > 0)
             {
-                Vm.MainWin.SelectedMater = Vm.MainWin.maters[0];
+                Vm.MainWin.currProj.Mater = Vm.MainWin.maters[0];
             }
         }
 
@@ -102,22 +102,21 @@ namespace simulation
         private void calc()
         {
             ApplyEffect(this);
-            int counts = 20000;
-            double dt = 1E-6;
-            int elements = 5;
+            
+            
             //int points = elements * 2;
-            int nodes = elements + 1;
+            int nodes = Vm.MainWin.currProj.elems + 1;
             //double Length = 80;
             Material currMater = new Material();
             Dispatcher.Invoke(new Action(() =>
             {
-                currMater = Vm.MainWin.SelectedMater;
+                currMater = Vm.MainWin.currProj.Mater;
             }));
-            double l = currMater.L / elements * Math.Pow(10, -3);
+            double l = currMater.L / Vm.MainWin.currProj.elems * Math.Pow(10, -3);
             //double b = 50 * Math.Pow(10, -3);
             //double h = 0.1 * Math.Pow(10, -3);
             //double massa = 0.1;
-            linearModel = new Linear.Model(counts, dt, nodes, elements, currMater.ro, currMater.E, l, currMater.b, currMater.h);
+            linearModel = new Linear.Model(Vm.MainWin.currProj.counts, Vm.MainWin.currProj.dT, nodes, Vm.MainWin.currProj.elems, currMater.ro, currMater.E, l, currMater.b, currMater.h);
             Linear.Model.init.Load(100, (1 * Math.Pow(10, -2)), linearModel.time, ref linearModel.N);
             Linear.Model.init.Coords(l, ref linearModel.N, ref linearModel.E);
             linearModel.calcMove();
@@ -229,7 +228,7 @@ namespace simulation
         {
             Vm.MainWin.maters.Add(new Material());
             Vm.RaisePropertyChanged("maters");
-            Vm.MainWin.SelectedMater = Vm.MainWin.maters[Vm.MainWin.maters.Count - 1];
+            Vm.MainWin.currProj.Mater = Vm.MainWin.maters[Vm.MainWin.maters.Count - 1];
             Vm.MainWin.SelectedRibbonTab = 2;
         }
 
@@ -242,7 +241,7 @@ namespace simulation
                 try
                 {
                     string jsonFromFile = JSON.ReadFile(openFileDialog.FileName);
-                    Vm.MainWin.currLoad = JsonConvert.DeserializeObject<Load>(jsonFromFile);
+                    Vm.MainWin.currProj.l = JsonConvert.DeserializeObject<Load>(jsonFromFile);
                 }
                 catch (Exception ex)
                 {
@@ -257,7 +256,7 @@ namespace simulation
             saveFileDialog.Filter = "Load file (*.lod)|*.lod";
             if (saveFileDialog.ShowDialog() == true)
             {
-                string json = JsonConvert.SerializeObject(Vm.MainWin.currLoad);
+                string json = JsonConvert.SerializeObject(Vm.MainWin.currProj.l);
                 Console.WriteLine(json);
                 JSON.SaveInFile(json, saveFileDialog.FileName);
             }
