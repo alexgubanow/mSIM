@@ -24,14 +24,14 @@ namespace simulation
         private static extern int ColorHLSToRGB(int H, int L, int S);
 
         private Thread UpdZedThrd;
-        public MainViewModel Vm { get { return (MainViewModel)DataContext; } }
+        public MainViewModel Vm;
 
         public MainWindow()
         {
             InitializeComponent();
-            var Main = new MainViewModel();
-            Main.ThrDmod = new ThrDmod(new FileDialogService(), view1);
-            this.DataContext = Main;
+            Vm = new MainViewModel();
+            Vm.ThrDmod = new ThrDmod(new FileDialogService(), view1);
+            this.DataContext = Vm;
             string jsonFromFile = JSON.ReadFile("materials.mater");
             Vm.MainWin.maters = JsonConvert.DeserializeObject<ObservableCollection<Material>>(jsonFromFile);
             if(Vm.MainWin.maters.Count > 0)
@@ -97,30 +97,23 @@ namespace simulation
         }
 
         public Linear.Model linearModel { get; private set; }
-        public Load load { get; private set; }
 
         private void calc()
         {
             ApplyEffect(this);
-            
-            
-            //int points = elements * 2;
             int nodes = Vm.MainWin.currProj.elems + 1;
-            //double Length = 80;
-            Material currMater = new Material();
-            Dispatcher.Invoke(new Action(() =>
-            {
-                currMater = Vm.MainWin.currProj.Mater;
-            }));
-            double l = currMater.L / Vm.MainWin.currProj.elems * Math.Pow(10, -3);
-            //double b = 50 * Math.Pow(10, -3);
-            //double h = 0.1 * Math.Pow(10, -3);
-            //double massa = 0.1;
-            linearModel = new Linear.Model(Vm.MainWin.currProj.counts, Vm.MainWin.currProj.dT, nodes, Vm.MainWin.currProj.elems, currMater.ro, currMater.E, l, currMater.b, currMater.h);
+            double l = Vm.MainWin.currProj.Mater.L / Vm.MainWin.currProj.elems * Math.Pow(10, -3);
+            linearModel = new Linear.Model(Vm.MainWin.currProj.counts, Vm.MainWin.currProj.dT, nodes, Vm.MainWin.currProj.elems,
+                Vm.MainWin.currProj.Mater.ro, Vm.MainWin.currProj.Mater.E, l, Vm.MainWin.currProj.Mater.b, Vm.MainWin.currProj.Mater.h);
             Linear.Model.init.Load(100, (1 * Math.Pow(10, -2)), linearModel.time, ref linearModel.N);
             Linear.Model.init.Coords(l, ref linearModel.N, ref linearModel.E);
             linearModel.calcMove();
+            plotData();
+            ClearEffect(this);
+        }
 
+        private void plotData()
+        {
             for (int j = 0; j < linearModel.N[j].Length; j++)
             {
                 double[] amps = new double[linearModel.N.Length];
@@ -183,7 +176,6 @@ namespace simulation
             }
             UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
             UpdZedThrd.Start();
-            ClearEffect(this);
         }
 
         private void btn_abrt_Click(object sender, RoutedEventArgs e)
@@ -195,20 +187,20 @@ namespace simulation
 
         private void loadMaterBtn_Click(object sender, RoutedEventArgs e)
         {
-            //OpenFileDialog openFileDialog = new OpenFileDialog();
-            //openFileDialog.Filter = "Material file (*.mater)|*.mater";
-            //if (openFileDialog.ShowDialog() == true)
-            //{
-            //    try
-            //    {
-            //        string jsonFromFile = JSON.ReadFile(openFileDialog.FileName);
-            //        Vm.MainWin.SelectedMater = JsonConvert.DeserializeObject<Material>(jsonFromFile);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show(ex.Message);
-            //    }
-            //}
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Material file (*.mater)|*.mater";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    string jsonFromFile = JSON.ReadFile(openFileDialog.FileName);
+                    Vm.MainWin.currProj.Mater = JsonConvert.DeserializeObject<Material>(jsonFromFile);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
         
 
