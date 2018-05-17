@@ -18,6 +18,7 @@ namespace simulation.ViewModel
             velosAx = new velosAx();
             displAx = new displAx();
             coordAx = new coordAx();
+            currLoad = new Load();
         }
 
         public forceAx forceAx { get; set; }
@@ -31,6 +32,9 @@ namespace simulation.ViewModel
 
         private Material _SelectedMater;
         public Material SelectedMater { get => _SelectedMater; set { _SelectedMater = value; RaisePropertyChanged("SelectedMater"); } }
+
+        private Load _currLoad;
+        public Load currLoad { get => _currLoad; set { _currLoad = value; RaisePropertyChanged("currLoad"); } }
 
         private int _selectedRibbonTab;
         public int SelectedRibbonTab { get => _selectedRibbonTab; set { _selectedRibbonTab = value; RaisePropertyChanged("selectedRibbonTab"); } }

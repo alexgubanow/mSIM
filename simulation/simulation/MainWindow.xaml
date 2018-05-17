@@ -47,7 +47,8 @@
                     <Fluent:RibbonGroupBox Header="Load">
                         <Fluent:Button x:Name="openFluentBtn" Margin="0,5,0,0" Header="From file"
                                    Icon="{iconPacks:Material Kind=FolderOpen}"
-                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" />
+                                   LargeIcon="{iconPacks:Material Kind=FolderOpen, Height=28, Width=28}" 
+                                       Click="openFluentBtn_Click"/>
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Itegration">
                         <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}"
@@ -77,6 +78,11 @@
                 <Fluent:RibbonTabItem Header="Load">
                     <Fluent:RibbonGroupBox Header="Initial state">
                         <local:numPowTen Margin="0,5,0,0" Clabel="V0" />
+                    </Fluent:RibbonGroupBox>
+                    <Fluent:RibbonGroupBox>
+                        <Fluent:Button Header="Export Load" x:Name="exportLoadBtn"
+                                   Icon="{iconPacks:Material Kind=Export}"
+                                       Click="exportLoadBtn_Click"/>
                     </Fluent:RibbonGroupBox>
                 </Fluent:RibbonTabItem>
                 <Fluent:RibbonTabItem Header="Material Parameters" Group="{Binding Source={x:Reference MaterialsGroup}}">

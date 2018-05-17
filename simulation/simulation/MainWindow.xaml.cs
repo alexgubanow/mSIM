@@ -103,7 +103,7 @@ namespace simulation
         {
             ApplyEffect(this);
             int counts = 20000;
-            double dt = 0.000001;
+            double dt = 1E-6;
             int elements = 5;
             //int points = elements * 2;
             int nodes = elements + 1;
@@ -232,6 +232,35 @@ namespace simulation
             Vm.MainWin.SelectedMater = Vm.MainWin.maters[Vm.MainWin.maters.Count - 1];
             Vm.MainWin.SelectedRibbonTab = 2;
         }
-        
+
+        private void openFluentBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Load file (*.lod)|*.lod";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    string jsonFromFile = JSON.ReadFile(openFileDialog.FileName);
+                    Vm.MainWin.currLoad = JsonConvert.DeserializeObject<Load>(jsonFromFile);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void exportLoadBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Load file (*.lod)|*.lod";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string json = JsonConvert.SerializeObject(Vm.MainWin.currLoad);
+                Console.WriteLine(json);
+                JSON.SaveInFile(json, saveFileDialog.FileName);
+            }
+        }
     }
 }
