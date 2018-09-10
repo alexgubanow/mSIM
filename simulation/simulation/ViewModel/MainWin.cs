@@ -12,14 +12,16 @@ namespace simulation.ViewModel
         {
             MaterialsVis = Visibility.Collapsed;
             IntegrSchems = new List<integr.Schems>() { integr.Schems.euler, integr.Schems.gear, integr.Schems.verlet };
-            mModels = new List<models>() { models.linear, models.nonlinear, models.particles };
+            mModels = new List<string>() { "linear", "nonlinear", "particles" };
             forceAx = new forceAx();
+            forceAxLV = new forceAxLV();
             acclAx = new acclAx();
             velosAx = new velosAx();
             displAx = new displAx();
             coordAx = new coordAx();
         }
 
+        public forceAxLV forceAxLV { get; set; }
         public forceAx forceAx { get; set; }
         public acclAx acclAx { get; set; }
         public velosAx velosAx { get; set; }
@@ -39,9 +41,9 @@ namespace simulation.ViewModel
 
         public List<integr.Schems> IntegrSchems { get => _integrSchems; set { _integrSchems = value; RaisePropertyChanged("IntegrSchems"); } }
 
-        private List<models> _mModels;
+        private List<string> _mModels;
 
-        public List<models> mModels { get => _mModels; set { _mModels = value; RaisePropertyChanged("mModels"); } }
+        public List<string> mModels { get => _mModels; set { _mModels = value; RaisePropertyChanged("mModels"); } }
 
         private ObservableCollection<Material> _maters;
 

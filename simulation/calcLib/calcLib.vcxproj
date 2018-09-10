@@ -133,19 +133,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="calcLib.h" />
+    <ClInclude Include="cosEnum.h" />
+    <ClInclude Include="cosMatrix.h" />
+    <ClInclude Include="axesEnum.h" />
+    <ClInclude Include="DerivEnum.h" />
+    <ClInclude Include="Element.h" />
+    <ClInclude Include="ForcePlaceEnum.h" />
     <ClInclude Include="integr.h" />
     <ClInclude Include="LinearModel.h" />
     <ClInclude Include="loc_glob.h" />
+    <ClInclude Include="modelsEnum.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="nodeFreedoms.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cosMatrix.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="calcLib.cpp" />
+    <ClCompile Include="Element.cpp" />
     <ClCompile Include="integr.cpp" />
     <ClCompile Include="LinearModel.cpp" />
     <ClCompile Include="loc_glob.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

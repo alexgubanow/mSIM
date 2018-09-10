@@ -1,10 +1,16 @@
 #include "stdafx.h"
 #include "loc_glob.h"
 
-calcLib::matrixPreob::matrixPreob(array<double>^ p1, array<double>^ p2, double L)
+void calcLib::preob::to_glob(array<float>^ loc, array<float>^ offset, array<float>^ angles, array<float>^% glob)
 {
-	_L = L;
-	Xx = _cos(p1[x], p2[x]); Xy = _cos(p1[y], p2[y]); Xz = _cos(p1[z], p2[z]);
-	//Yx = _cos(X[0], X[1]); Yy = _cos(Y[0], Y[1]); Yz = _cos(Z[0], Z[1]);
-	//Zx = _cos(X[0], X[1]); Zy = _cos(Y[0], Y[1]); Zz = _cos(Z[0], Z[1]);
+	glob[x] = offset[x] + angles[(int)cosEnum::Xx] * loc[x] + angles[(int)cosEnum::Xy] * loc[y] + angles[(int)cosEnum::Xz] * loc[z];
+	glob[y] = offset[y] + angles[(int)cosEnum::Yx] * loc[y] + angles[(int)cosEnum::Yy] * loc[x] + angles[(int)cosEnum::Yx] * loc[z];
+	glob[z] = offset[z] + angles[(int)cosEnum::Zx] * loc[y] + angles[(int)cosEnum::Zy] * loc[y] + angles[(int)cosEnum::Zz] * loc[z];
+}
+
+void calcLib::preob::to_loc(array<float>^ glob, array<float>^ offset, array<float>^ angles, array<float>^% loc)
+{
+	loc[x] = angles[(int)cosEnum::Xx] * (glob[x] - offset[x]) + angles[(int)cosEnum::Xy] * (glob[y] - offset[y]) + angles[(int)cosEnum::Xz] * (glob[z] - offset[z]);
+	loc[y] = angles[(int)cosEnum::Yx] * (glob[x] - offset[x]) + angles[(int)cosEnum::Yy] * (glob[y] - offset[y]) + angles[(int)cosEnum::Yz] * (glob[z] - offset[z]);
+	loc[z] = angles[(int)cosEnum::Zx] * (glob[x] - offset[x]) + angles[(int)cosEnum::Zy] * (glob[y] - offset[y]) + angles[(int)cosEnum::Zz] * (glob[z] - offset[z]);
 }

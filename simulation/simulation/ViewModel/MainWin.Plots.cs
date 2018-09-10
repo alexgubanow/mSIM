@@ -1,9 +1,25 @@
-﻿using System.ComponentModel;
+﻿using LiveCharts;
 using ZedGraph;
 
 namespace simulation.ViewModel
 {
-    public class forceAx : INotifyPropertyChanged
+    public class forceAxLV : nPropChanged
+    {
+        public forceAxLV()
+        {
+            SeriesCollection = new SeriesCollection();
+        }
+
+        private SeriesCollection _SeriesCollection;
+
+        public SeriesCollection SeriesCollection
+        {
+            get { return _SeriesCollection; }
+            set { _SeriesCollection = value; RaisePropertyChanged("SeriesCollection"); }
+        }
+    }
+
+    public class forceAx : nPropChanged
     {
         public forceAx()
         {
@@ -31,17 +47,9 @@ namespace simulation.ViewModel
             get { return _graphPane; }
             set { _graphPane = value; RaisePropertyChanged("graphPane"); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
-    public class acclAx : INotifyPropertyChanged
+    public class acclAx : nPropChanged
     {
         public acclAx()
         {
@@ -69,17 +77,9 @@ namespace simulation.ViewModel
             get { return _graphPane; }
             set { _graphPane = value; RaisePropertyChanged("graphPane"); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
-    public class velosAx : INotifyPropertyChanged
+    public class velosAx : nPropChanged
     {
         public velosAx()
         {
@@ -107,17 +107,9 @@ namespace simulation.ViewModel
             get { return _graphPane; }
             set { _graphPane = value; RaisePropertyChanged("graphPane"); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
-    public class displAx : INotifyPropertyChanged
+    public class displAx : nPropChanged
     {
         public displAx()
         {
@@ -145,17 +137,9 @@ namespace simulation.ViewModel
             get { return _graphPane; }
             set { _graphPane = value; RaisePropertyChanged("graphPane"); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
-    public class coordAx : INotifyPropertyChanged
+    public class coordAx : nPropChanged
     {
         public coordAx()
         {
@@ -182,14 +166,6 @@ namespace simulation.ViewModel
         {
             get { return _graphPane; }
             set { _graphPane = value; RaisePropertyChanged("graphPane"); }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

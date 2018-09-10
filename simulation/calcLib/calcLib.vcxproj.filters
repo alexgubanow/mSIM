@@ -24,13 +24,37 @@
     <ClInclude Include="LinearModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="calcLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="integr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="loc_glob.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Element.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nodeFreedoms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="axesEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modelsEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForcePlaceEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DerivEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cosMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cosEnum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,13 +68,19 @@
     <ClCompile Include="LinearModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="calcLib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="integr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="loc_glob.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Element.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cosMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

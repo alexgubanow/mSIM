@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:simulation"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
@@ -165,6 +166,8 @@
                                 <ListBoxItem Content="Y" />
                                 <ListBoxItem Content="Z" />
                             </ListBox>
+                            <!--<lvc:CartesianChart Series="{Binding MainWin.forceAxLV.SeriesCollection}"
+                                                 Hoverable="False" DataTooltip="{x:Null}" AnimationsSpeed="0:0:0.1" />-->
                             <local:zgWPF x:Name="fPlot" graphPane="{Binding MainWin.forceAx.graphPane, Mode=TwoWay}" />
                         </DockPanel>
                     </TabItem>

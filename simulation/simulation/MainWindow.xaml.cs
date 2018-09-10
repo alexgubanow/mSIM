@@ -1,4 +1,6 @@
 ﻿using calcLib;
+using LiveCharts;
+using LiveCharts.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using simulation.ViewModel;
@@ -9,6 +11,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ZedGraph;
@@ -96,13 +99,13 @@ namespace simulation
             srtThread.Start();
         }
 
-        public Linear.Model linearModel { get; private set; }
+        public LinearModel linearModel { get; private set; }
 
         private void calc()
         {
             ApplyEffect(this);
-            int counts = 20000;
-            double dt = 0.000001;
+            uint counts = 8000;
+            float dt = 0.000001f;
             int elements = 5;
             //int points = elements * 2;
             int nodes = elements + 1;
@@ -112,77 +115,91 @@ namespace simulation
             {
                 currMater = Vm.MainWin.SelectedMater;
             }));
-            double l = currMater.L / elements * Math.Pow(10, -3);
+            float l = currMater.L / elements * (float)Math.Pow(10, -3);
+            //float l = 0.5f;
             //double b = 50 * Math.Pow(10, -3);
             //double h = 0.1 * Math.Pow(10, -3);
             //double massa = 0.1;
-            linearModel = new Linear.Model(counts, dt, nodes, elements, currMater.ro, currMater.E, l, currMater.b, currMater.h);
-            Linear.Model.init.Load(100, (1 * Math.Pow(10, -2)), linearModel.time, ref linearModel.N);
-            Linear.Model.init.Coords(l, ref linearModel.N, ref linearModel.E);
+            linearModel = new LinearModel(counts, dt, nodes, elements, currMater.ro, currMater.E, l, currMater.b, currMater.h);
+            LinearModel.initCoords(l, counts, ref linearModel.N, ref linearModel.E);
+            LinearModel.initLoad(100, (1 * (float)Math.Pow(10, -3)), linearModel.time, ref linearModel.N);
             linearModel.calcMove();
+            double[] timeD = new double[counts];
+            Parallel.For(0, counts, i => {
+                timeD[i] = linearModel.time[i];
+            });
 
-            for (int j = 0; j < linearModel.N[j].Length; j++)
+
+
+            for (int n = 0; n < linearModel.N.Length; n++)
             {
-                double[] amps = new double[linearModel.N.Length];
-                for (int i = 0; i < linearModel.N.Length; i++)
-                {
-                    amps[i] = linearModel.N[i][j].deriv.force[0];
-                }
+                double[] amps = new double[counts];
+                Parallel.For(0, counts, i => {
+                    amps[i] = linearModel.N[n].deriv[i][(int)DerivEnum.force][0];
+                });
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    Vm.MainWin.forceAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                    Vm.MainWin.forceAx.graphPane.AddCurve("n" + n, timeD, amps, Color.Red, SymbolType.None);
                 }));
             }
-            for (int j = 0; j < linearModel.N[j].Length; j++)
+            for (int n = 0; n < linearModel.N.Length; n++)
             {
-                double[] amps = new double[linearModel.N.Length];
-                for (int i = 0; i < linearModel.N.Length; i++)
-                {
-                    amps[i] = linearModel.N[i][j].deriv.accl[0];
-                }
+                double[] amps = new double[counts];
+                Parallel.For(0, counts, i => {
+                    amps[i] = linearModel.N[n].deriv[i][(int)DerivEnum.a][0];
+                });
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    Vm.MainWin.acclAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                    Vm.MainWin.acclAx.graphPane.AddCurve("n" + n, timeD, amps, Color.Red, SymbolType.None);
                 }));
             }
-            for (int j = 0; j < linearModel.N[j].Length; j++)
+            for (int n = 0; n < linearModel.N.Length; n++)
             {
-                double[] amps = new double[linearModel.N.Length];
-                for (int i = 0; i < linearModel.N.Length; i++)
-                {
-                    amps[i] = linearModel.N[i][j].deriv.velos[0];
-                }
+                double[] amps = new double[counts];
+                Parallel.For(0, counts, i => {
+                    amps[i] = linearModel.N[n].deriv[i][(int)DerivEnum.v][0];
+                });
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    Vm.MainWin.velosAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                    Vm.MainWin.velosAx.graphPane.AddCurve("n" + n, timeD, amps, Color.Red, SymbolType.None);
                 }));
             }
-            for (int j = 0; j < linearModel.N[j].Length; j++)
+            for (int n = 0; n < linearModel.N.Length; n++)
             {
-                double[] amps = new double[linearModel.N.Length];
-                for (int i = 0; i < linearModel.N.Length; i++)
-                {
-                    amps[i] = linearModel.N[i][j].deriv.displ[0];
-                }
+                double[] amps = new double[counts];
+                Parallel.For(0, counts, i => {
+                    amps[i] = linearModel.N[n].deriv[i][(int)DerivEnum.u][0];
+                });
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    Vm.MainWin.displAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                    Vm.MainWin.displAx.graphPane.AddCurve("n" + n, timeD, amps, Color.Red, SymbolType.None);
                 }));
             }
-            for (int j = 0; j < linearModel.N[j].Length; j++)
+            for (int n = 0; n < linearModel.N.Length; n++)
             {
-                double[] amps = new double[linearModel.N.Length];
-                for (int i = 0; i < linearModel.N.Length; i++)
-                {
-                    amps[i] = linearModel.N[i][j].deriv.coord[0];
-                }
+                double[] amps = new double[counts];
+                Parallel.For(0, counts, i => {
+                    amps[i] = linearModel.N[n].deriv[i][(int)DerivEnum.coord][0];
+                });
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    Vm.MainWin.coordAx.graphPane.AddCurve("n" + j, linearModel.time, amps, Color.Red, SymbolType.None);
+                    Vm.MainWin.coordAx.graphPane.AddCurve("n" + n, timeD, amps, Color.Red, SymbolType.None);
                 }));
             }
             UpdZedThrd = new Thread(() => updZed(fPlot.ZedGraphPlot));
             UpdZedThrd.Start();
+            //var cv = new ChartValues<float>();
+            //cv.AddRange(linearModel.N[0].deriv[(int)DerivEnum.force][0]);
+            //Dispatcher.Invoke(new Action(() =>
+            //{
+            //    Vm.MainWin.forceAxLV.SeriesCollection.Clear();
+            //    Vm.MainWin.forceAxLV.SeriesCollection.Add(new LineSeries
+            //    {
+            //        Title = "Series 1",
+            //        Values = cv,
+            //        LineSmoothness = 1
+            //    });
+            //}));
             ClearEffect(this);
         }
 

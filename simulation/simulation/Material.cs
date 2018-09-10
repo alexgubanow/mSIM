@@ -20,29 +20,29 @@ namespace simulation
         [JsonProperty]
         public string Name { get { return _Name; } set { _Name = value; RaisePropertyChanged("Name"); } }
 
-        private double _L;
+        private float _L;
 
         [JsonProperty]
-        public double L { get { return _L; } set { _L = value; RaisePropertyChanged("L"); } }
+        public float L { get { return _L; } set { _L = value; RaisePropertyChanged("L"); } }
 
-        private double _b;
-
-        [JsonProperty]
-        public double b { get { return _b; } set { _b = value; RaisePropertyChanged("b"); } }
-
-        private double _h;
+        private float _b;
 
         [JsonProperty]
-        public double h { get { return _h; } set { _h = value; RaisePropertyChanged("h"); } }
+        public float b { get { return _b; } set { _b = value; RaisePropertyChanged("b"); } }
 
-        private double _ro;
-
-        [JsonProperty]
-        public double ro { get { return _ro; } set { _ro = value; RaisePropertyChanged("ro"); } }
-
-        private double _E;
+        private float _h;
 
         [JsonProperty]
-        public double E { get { return _E; } set { _E = value; RaisePropertyChanged("E"); } }
+        public float h { get { return _h; } set { _h = value; RaisePropertyChanged("h"); } }
+
+        private float _ro;
+
+        [JsonProperty]
+        public float ro { get { return _ro; } set { _ro = value; RaisePropertyChanged("ro"); } }
+
+        private float _E;
+
+        [JsonProperty]
+        public float E { get { return _E; } set { _E = value; RaisePropertyChanged("E"); } }
     }
 }
