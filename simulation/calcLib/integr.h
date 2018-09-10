@@ -20,17 +20,12 @@ namespace calcLib
 
 		static void euler(array<array<array<float>^>^>^ %deriv, int prevState, int currState, float massa, float l, float dt);
 
-		static void verlet(array<float>^  lastx, array<float>^  lastv, array<float>^ lasta, array<float>^  F,
-			float deltat, float massa, float l,
-			array<float>^ %xp, array<float>^  %vp, array<float>^  %ap);
+		static void verlet(array<array<array<float>^>^>^ %deriv, int prev, int now, float massa, float l, float dt);
 
-		static void gearp(array<float>^ lastx, array<float>^lastv, array<float>^ lasta, array<float>^ lastb, array<float>^ F,
-			float deltat, float massa, float l,
-			array<float>^ %xp, array<float>^ %vp, array<float>^ %ap, array<float>^ %bp);
+		static void gearp(array<array<float>^>^ %derivP, float massa, array<float>^ lastA, array<float>^ lastC, float l, float dt);
 
-		static void gearc(array<float>^ xp, array<float>^ vp, array<float>^ ap, array<float>^ bp, array<float>^ F,
-			double deltat, float massa, float l,
-			array<float>^ %xc, array<float>^ %vc, array<float>^ %ac, array<float>^ %bc);
+		static void gearc(array<array<array<float>^>^>^ %deriv, array<array<float>^>^ derivP, int prev, int now, float massa, float l, float dt);
+
 		enum class Schems
 		{
 			euler = 0,

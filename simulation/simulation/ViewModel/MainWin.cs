@@ -41,6 +41,10 @@ namespace simulation.ViewModel
 
         public List<integr.Schems> IntegrSchems { get => _integrSchems; set { _integrSchems = value; RaisePropertyChanged("IntegrSchems"); } }
 
+        private integr.Schems _integrSchem;
+
+        public integr.Schems IntegrSchem { get => _integrSchem; set { _integrSchem = value; RaisePropertyChanged("IntegrSchem"); } }
+
         private List<string> _mModels;
 
         public List<string> mModels { get => _mModels; set { _mModels = value; RaisePropertyChanged("mModels"); } }

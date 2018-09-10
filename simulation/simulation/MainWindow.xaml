@@ -52,6 +52,7 @@
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Itegration">
                         <Fluent:ComboBox Margin="0,5,0,0" Header="Scheme" ItemsSource="{Binding MainWin.IntegrSchems}"
+                                         SelectedItem="{Binding MainWin.IntegrSchem}"
                                      MinWidth="125" IsEditable="False" />
                     </Fluent:RibbonGroupBox>
                     <Fluent:RibbonGroupBox Header="Model">
