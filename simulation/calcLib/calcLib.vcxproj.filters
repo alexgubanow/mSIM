@@ -30,9 +30,6 @@
     <ClInclude Include="loc_glob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Element.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -57,6 +54,15 @@
     <ClInclude Include="cosEnum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Member.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MemberTypeEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LinearElem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -74,13 +80,16 @@
     <ClCompile Include="loc_glob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Element.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cosMatrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Member.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LinearElem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

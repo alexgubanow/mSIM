@@ -137,11 +137,13 @@
     <ClInclude Include="cosMatrix.h" />
     <ClInclude Include="axesEnum.h" />
     <ClInclude Include="DerivEnum.h" />
-    <ClInclude Include="Element.h" />
+    <ClInclude Include="LinearElem.h" />
     <ClInclude Include="ForcePlaceEnum.h" />
     <ClInclude Include="integr.h" />
     <ClInclude Include="LinearModel.h" />
     <ClInclude Include="loc_glob.h" />
+    <ClInclude Include="Member.h" />
+    <ClInclude Include="MemberTypeEnum.h" />
     <ClInclude Include="modelsEnum.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="nodeFreedoms.h" />
@@ -151,10 +153,11 @@
   <ItemGroup>
     <ClCompile Include="cosMatrix.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="Element.cpp" />
+    <ClCompile Include="LinearElem.cpp" />
     <ClCompile Include="integr.cpp" />
     <ClCompile Include="LinearModel.cpp" />
     <ClCompile Include="loc_glob.cpp" />
+    <ClCompile Include="Member.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

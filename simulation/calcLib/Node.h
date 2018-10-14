@@ -7,6 +7,7 @@ namespace calcLib
 	public:
 		nodeFreedoms nodeFreedom;
 		array<array<array<float>^>^>^ deriv;
-		Node(nodeFreedoms newnodeFreedom, int counts);
+		array<int>^ members;
+		Node(nodeFreedoms newnodeFreedom, int counts, int maxMembers);
 	};
 }
