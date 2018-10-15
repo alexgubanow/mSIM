@@ -4,6 +4,7 @@
 #include "loc_glob.h"
 #include "float.h"
 #include "DerivEnum.h"
+#include "cosMatrix.h"
 
 
 calcLib::Member::Member(int n1Index, int n2Index, mtEnum MemberType)
@@ -12,18 +13,19 @@ calcLib::Member::Member(int n1Index, int n2Index, mtEnum MemberType)
 	nodes = gcnew array<int>(2) { n1Index, n2Index };
 }
 
-void calcLib::Member::getDisturb(array<array<array<float>^>^>^ %deriv, int prev, int now)
+void calcLib::Member::getDisturb(float E, float A, array<Node^>^% N, int prev, int now)
 {
+		array<array<float>^>^ DCM;
+		cosMatrix::getAngles(N[nodes[0]]->deriv[prev][(int)DerivEnum::coord], N[nodes[1]]->deriv[prev][(int)DerivEnum::coord], l, DCM);
 	switch (MrType)
 	{
 	case LinElem:
-		//get lenght
-		float l = preob::getL(deriv[prev][(int)DerivEnum::coord], deriv[prev][(int)DerivEnum::coord]);
+		//get length
+		float l = preob::getL(N[nodes[0]]->deriv[prev][(int)DerivEnum::coord], N[nodes[1]]->deriv[prev][(int)DerivEnum::coord]);
 		if (l == 0 || l >= FLT_MAX) { throw gcnew NotFiniteNumberException(); }
 		//calc DCM for it
-		cosMatrix::getAngles();
 		//calc force of member like of discrete element
-		LinearElem::getForce();
+		LinearElem::getDisturb(E,A,l, N[nodes[0]]->deriv[prev], N[nodes[0]]->deriv[now]);
 		break;
 	case pointLoad:
 		//get force of point loading
