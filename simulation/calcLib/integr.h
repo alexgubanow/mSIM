@@ -15,7 +15,7 @@ namespace calcLib
 		void get_coordsvab_from_dipl(array<float>^ xp,
 			array<float>^ lastcoords, array<float>^ lastx, array<float>^ lastv, array<float>^ lasta,
 			float dt, array<float>^ %coords, array<float>^  %vp, array<float>^ %ap);;
-		//void get_xvab_from_coords(size_t demensia, array<array<array<float>^>^>^ prevState, Derivatives^ %currState);;
+		//void get_xvab_from_coords(int demensia, array<array<array<float>^>^>^ prevState, Derivatives^ %currState);;
 	public:
 
 		static void euler(array<array<array<float>^>^>^ %deriv, int prevState, int currState, float massa, float l, float dt);

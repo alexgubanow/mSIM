@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "integr.h"
-//void integr::get_xvab_from_coords(size_t demensia, Derivatives ^ prevState, Derivatives ^% currState)
+//void integr::get_xvab_from_coords(int demensia, Derivatives ^ prevState, Derivatives ^% currState)
 	//{
-	//	for (size_t i = 0; i < demensia; i++)
+	//	for (int i = 0; i < demensia; i++)
 	//	{
 	//		/*xp[i] = lastx[i] + (newcoords[i] - lastcoords[i]) / dt;
 	//		vp[i] = lastv[i] + (xp[i] - lastx[i]) / dt;
