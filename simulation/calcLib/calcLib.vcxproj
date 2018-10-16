@@ -140,7 +140,7 @@
     <ClInclude Include="LinearElem.h" />
     <ClInclude Include="ForcePlaceEnum.h" />
     <ClInclude Include="integr.h" />
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="mModel.h" />
     <ClInclude Include="loc_glob.h" />
     <ClInclude Include="Member.h" />
     <ClInclude Include="MemberTypeEnum.h" />
@@ -155,7 +155,7 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="LinearElem.cpp" />
     <ClCompile Include="integr.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="mModel.cpp" />
     <ClCompile Include="loc_glob.cpp" />
     <ClCompile Include="Member.cpp" />
     <ClCompile Include="Node.cpp" />

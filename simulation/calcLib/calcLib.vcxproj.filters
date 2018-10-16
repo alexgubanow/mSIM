@@ -60,7 +60,7 @@
     <ClInclude Include="LinearElem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="mModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,7 +89,7 @@
     <ClCompile Include="LinearElem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
+    <ClCompile Include="mModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,6 +5,8 @@ namespace calcLib
 	public ref class Node
 	{
 	public:
+		float m;
+		float l;
 		nodeFreedoms nodeFreedom;
 		array<array<array<float>^>^>^ deriv;
 		array<int>^ members;

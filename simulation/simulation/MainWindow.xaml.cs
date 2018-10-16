@@ -100,7 +100,7 @@ namespace simulation
             srtThread.Start();
         }
 
-        public LinearModel linearModel { get; private set; }
+        public mModel mModel { get; private set; }
 
         private void calc(integr.Schems iS)
         {

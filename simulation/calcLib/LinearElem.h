@@ -7,7 +7,7 @@ namespace calcLib
 	{
 	public:
 		LinearElem();
-		static void getForce(float E, float A, float l, float l0, array<float>^ force);
+		static void getForce(float E, float A, float l, array<float>^ Ux1, array<float>^ Ux2, array<float>^% force);
 	};
 
 };

@@ -14,14 +14,24 @@ calcLib::Member::Member(int n1Index, int n2Index, mtEnum MemberType)
 	n2 = n2Index;
 }
 
-void calcLib::Member::getDisturb(float E, array<Node^>^% N, int actNode, int prev, int now, float _dt)
+void calcLib::Member::getDisturb(array<Node^>^% N, int actNode, int prev, int now, float _dt)
 {
+	array<float>^ locUactNode = gcnew array<float>(6);
+	array<float>^ loocUlinkedNode = gcnew array<float>(6);
+	array<float>^ locForce = gcnew array<float>(6);
+	array<float>^ globForce = gcnew array<float>(6);
+	//translate displ to loc
+	preob::to_loc(N[actNode]->deriv[prev][(int)DerivEnum::u], DCM, locUactNode);
+	preob::to_loc(N[actNode == n1 ? n1 : n2]->deriv[prev][(int)DerivEnum::u], DCM, loocUlinkedNode);
 	//get force of member, in glob
-	array<array<float>^>^ mDeriv = gcnew array<array<float>^>(6);
-	getForce(mDeriv[(int)DerivEnum::force]);
-	//integrate it
-	integr::euler(mDeriv, prev, now, m, l, _dt);
-	//put all deriv to node
+	getForce(locUactNode, loocUlinkedNode, locForce);
+	//translate force to glob
+	preob::to_glob(locForce, DCM, globForce);
+	//put it to node
+	for (int i = 0; i < 6; i++)
+	{
+		N[actNode]->deriv[prev][(int)DerivEnum::force][i] += globForce[i];
+	}
 }
 
 void calcLib::Member::calcDCM(array<Node^>^ N, int actNode, int t)
@@ -35,19 +45,13 @@ void calcLib::Member::calcDCM(array<Node^>^ N, int actNode, int t)
 	}
 }
 
-void calcLib::Member::getForce(array<float>^% memberForce)
+void calcLib::Member::getForce(array<float>^ Ux1, array<float>^ Ux2, array<float>^% memberForce)
 {
 	switch (MrType)
 	{
 	case LinElem:
-		//array<float>^ locU;
-		array<float>^ locF;
-		////translate to local U of node
-		//preob::to_loc(N[actNode]->deriv[prev][(int)DerivEnum::u], N[actNode]->deriv[prev][(int)DerivEnum::u], DCM, locU);
 		//calc force of member like of discrete element
-		LinearElem::getForce(E, A, l, l0, locF);
-		//translate force to glob
-		preob::to_glob(locF, DCM, memberForce);
+		LinearElem::getForce(E, A, l, Ux1, Ux2, memberForce);
 		break;
 	}
 }
