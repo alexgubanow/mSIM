@@ -22,7 +22,7 @@ void calcLib::Member::getDisturb(array<Node^>^% N, int actNode, int prev, int no
 	array<float>^ globForce = gcnew array<float>(6);
 	//translate displ to loc
 	preob::to_loc(N[actNode]->deriv[prev][(int)DerivEnum::u], DCM, locUactNode);
-	preob::to_loc(N[actNode == n1 ? n1 : n2]->deriv[prev][(int)DerivEnum::u], DCM, loocUlinkedNode);
+	preob::to_loc(N[actNode == n1 ? n2 : n1]->deriv[prev][(int)DerivEnum::u], DCM, loocUlinkedNode);
 	//get force of member, in glob
 	getForce(locUactNode, loocUlinkedNode, locForce);
 	//translate force to glob
@@ -40,7 +40,7 @@ void calcLib::Member::calcDCM(array<Node^>^ N, int actNode, int t)
 	{
 	case LinElem:
 		//calc DCM for linear item
-		cosMatrix::getAngles(N[actNode == n1 ? n1 : n2]->deriv[t][(int)DerivEnum::coord], N[actNode == n1 ? n1 : n2]->deriv[t][(int)DerivEnum::coord], l, DCM);
+		cosMatrix::getAngles(N[actNode == n1 ? n2 : n1]->deriv[t][(int)DerivEnum::coord], N[actNode == n1 ? n2 : n1]->deriv[t][(int)DerivEnum::coord], l, DCM);
 		break;
 	}
 }
